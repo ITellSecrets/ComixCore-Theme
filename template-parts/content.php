@@ -9,7 +9,7 @@
 
         if ( 'post' === get_post_type() ) : ?>
         <div class="entry-meta">
-            <?php wyrdnorthwest_posted_on(); ?>
+            <?php comixcore_posted_on(); ?>
         </div><?php
         endif; ?>
     </header><div class="entry-content">
@@ -17,5 +17,5 @@
             the_excerpt(); // Display excerpt for archives
         ?>
     </div><footer class="entry-footer">
-        <?php wyrdnorthwest_entry_footer(); ?>
+        <?php comixcore_entry_footer(); ?>
     </footer></article>

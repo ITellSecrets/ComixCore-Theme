@@ -1,13 +1,13 @@
 <?php
 /**
- * Wyrd Northwest functions and definitions.
+ * ComixCore functions and definitions.
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @package Wyrd_Northwest
+ * @package ComixCore
  */
 
-if ( ! function_exists( 'wyrdnorthwest_setup' ) ) :
+if ( ! function_exists( 'comixcore_setup' ) ) :
     /**
      * Sets up theme defaults and registers support for various WordPress features.
      *
@@ -15,13 +15,13 @@ if ( ! function_exists( 'wyrdnorthwest_setup' ) ) :
      * runs before the init hook. The init hook is too late for some features, such
      * as indicating support for post thumbnails.
      */
-    function wyrdnorthwest_setup() {
+    function comixcore_setup() {
         /*
          * Make theme available for translation.
          * Translations can be filed in the /languages/ directory.
          * If you're building a theme for public use, then include a text domain.
          */
-        load_theme_textdomain( 'wyrdnorthwest', get_template_directory() . '/languages' );
+        load_theme_textdomain( 'comixcore', get_template_directory() . '/languages' );
 
         // Add default posts and comments RSS feed links to head.
         add_theme_support( 'automatic-feed-links' );
@@ -43,7 +43,7 @@ if ( ! function_exists( 'wyrdnorthwest_setup' ) ) :
 
         // This theme uses wp_nav_menu() in one location.
         register_nav_menus( array(
-            'primary' => esc_html__( 'Primary', 'wyrdnorthwest' ),
+            'primary' => esc_html__( 'Primary', 'comixcore' ),
         ) );
 
         /*
@@ -59,7 +59,7 @@ if ( ! function_exists( 'wyrdnorthwest_setup' ) ) :
         ) );
 
         // Set up the WordPress core custom background feature.
-        add_theme_support( 'custom-background', apply_filters( 'wyrdnorthwest_custom_background_args', array(
+        add_theme_support( 'custom-background', apply_filters( 'comixcore_custom_background_args', array(
             'default-color' => 'ffffff',
             'default-image' => '',
         ) ) );
@@ -80,51 +80,51 @@ if ( ! function_exists( 'wyrdnorthwest_setup' ) ) :
         ) );
     }
 endif;
-add_action( 'after_setup_theme', 'wyrdnorthwest_setup' );
+add_action( 'after_setup_theme', 'comixcore_setup' );
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
  * @global int $content_width
  */
-function wyrdnorthwest_content_width() {
-    $GLOBALS['content_width'] = apply_filters( 'wyrdnorthwest_content_width', 640 );
+function comixcore_content_width() {
+    $GLOBALS['content_width'] = apply_filters( 'comixcore_content_width', 640 );
 }
-add_action( 'after_setup_theme', 'wyrdnorthwest_content_width', 0 );
+add_action( 'after_setup_theme', 'comixcore_content_width', 0 );
 
 /**
  * Register widget area.
  *
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
-function wyrdnorthwest_widgets_init() {
+function comixcore_widgets_init() {
     register_sidebar( array(
-        'name'          => esc_html__( 'Sidebar', 'wyrdnorthwest' ),
+        'name'          => esc_html__( 'Sidebar', 'comixcore' ),
         'id'            => 'sidebar-1',
-        'description'   => esc_html__( 'Add widgets here.', 'wyrdnorthwest' ),
+        'description'   => esc_html__( 'Add widgets here.', 'comixcore' ),
         'before_widget' => '<section id="%1$s" class="widget %2$s">',
         'after_widget'  => '</section>',
         'before_title'  => '<h2 class="widget-title">',
         'after_title'   => '</h2>',
     ) );
 }
-add_action( 'widgets_init', 'wyrdnorthwest_widgets_init' );
+add_action( 'widgets_init', 'comixcore_widgets_init' );
 
 /**
  * Enqueue scripts and styles.
  */
-function wyrdnorthwest_scripts() {
-    wp_enqueue_style( 'wyrdnorthwest-style', get_stylesheet_uri() );
+function comixcore_scripts() {
+    wp_enqueue_style( 'comixcore-style', get_stylesheet_uri() );
 
-    wp_enqueue_script( 'wyrdnorthwest-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
+    wp_enqueue_script( 'comixcore-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
 
-    wp_enqueue_script( 'wyrdnorthwest-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
+    wp_enqueue_script( 'comixcore-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
 
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
         wp_enqueue_script( 'comment-reply' );
     }
 }
-add_action( 'wp_enqueue_scripts', 'wyrdnorthwest_scripts' );
+add_action( 'wp_enqueue_scripts', 'comixcore_scripts' );
 
 /**
  * Implement the Custom Header feature.
@@ -158,39 +158,39 @@ require get_template_directory() . '/inc/jetpack.php';
  */
 
 // Register Custom Post Type: Comic Page
-function wyrdnorthwest_register_comic_post_type() {
+function comixcore_register_comic_post_type() {
     $labels = array(
-        'name'                  => _x( 'Comics', 'Post Type General Name', 'wyrdnorthwest' ),
-        'singular_name'         => _x( 'Comic', 'Post Type Singular Name', 'wyrdnorthwest' ),
-        'menu_name'             => __( 'Comics', 'wyrdnorthwest' ),
-        'name_admin_bar'        => __( 'Comic', 'wyrdnorthwest' ),
-        'archives'              => __( 'Comic Archives', 'wyrdnorthwest' ),
-        'attributes'            => __( 'Comic Attributes', 'wyrdnorthwest' ),
-        'parent_item_colon'     => __( 'Parent Comic:', 'wyrdnorthwest' ),
-        'all_items'             => __( 'All Comics', 'wyrdnorthwest' ),
-        'add_new_item'          => __( 'Add New Comic', 'wyrdnorthwest' ),
-        'add_new'               => __( 'Add New', 'wyrdnorthwest' ),
-        'new_item'              => __( 'New Comic', 'wyrdnorthwest' ),
-        'edit_item'             => __( 'Edit Comic', 'wyrdnorthwest' ),
-        'update_item'           => __( 'Update Comic', 'wyrdnorthwest' ),
-        'view_item'             => __( 'View Comic', 'wyrdnorthwest' ),
-        'view_items'            => __( 'View Comics', 'wyrdnorthwest' ),
-        'search_items'          => __( 'Search Comic', 'wyrdnorthwest' ),
-        'not_found'             => __( 'Not found', 'wyrdnorthwest' ),
-        'not_found_in_trash'    => __( 'Not found in Trash', 'wyrdnorthwest' ),
-        'featured_image'        => __( 'Comic Page Image', 'wyrdnorthwest' ),
-        'set_featured_image'    => __( 'Set comic page image', 'wyrdnorthwest' ),
-        'remove_featured_image' => __( 'Remove comic page image', 'wyrdnorthwest' ),
-        'use_featured_image'    => __( 'Use as comic page image', 'wyrdnorthwest' ),
-        'insert_into_item'      => __( 'Insert into comic', 'wyrdnorthwest' ),
-        'uploaded_to_this_item' => __( 'Uploaded to this comic', 'wyrdnorthwest' ),
-        'items_list'            => __( 'Comics list', 'wyrdnorthwest' ),
-        'items_list_navigation' => __( 'Comics list navigation', 'wyrdnorthwest' ),
-        'filter_items_list'     => __( 'Filter comics list', 'wyrdnorthwest' ),
+        'name'                  => _x( 'Comics', 'Post Type General Name', 'comixcore' ),
+        'singular_name'         => _x( 'Comic', 'Post Type Singular Name', 'comixcore' ),
+        'menu_name'             => __( 'Comics', 'comixcore' ),
+        'name_admin_bar'        => __( 'Comic', 'comixcore' ),
+        'archives'              => __( 'Comic Archives', 'comixcore' ),
+        'attributes'            => __( 'Comic Attributes', 'comixcore' ),
+        'parent_item_colon'     => __( 'Parent Comic:', 'comixcore' ),
+        'all_items'             => __( 'All Comics', 'comixcore' ),
+        'add_new_item'          => __( 'Add New Comic', 'comixcore' ),
+        'add_new'               => __( 'Add New', 'comixcore' ),
+        'new_item'              => __( 'New Comic', 'comixcore' ),
+        'edit_item'             => __( 'Edit Comic', 'comixcore' ),
+        'update_item'           => __( 'Update Comic', 'comixcore' ),
+        'view_item'             => __( 'View Comic', 'comixcore' ),
+        'view_items'            => __( 'View Comics', 'comixcore' ),
+        'search_items'          => __( 'Search Comic', 'comixcore' ),
+        'not_found'             => __( 'Not found', 'comixcore' ),
+        'not_found_in_trash'    => __( 'Not found in Trash', 'comixcore' ),
+        'featured_image'        => __( 'Comic Page Image', 'comixcore' ),
+        'set_featured_image'    => __( 'Set comic page image', 'comixcore' ),
+        'remove_featured_image' => __( 'Remove comic page image', 'comixcore' ),
+        'use_featured_image'    => __( 'Use as comic page image', 'comixcore' ),
+        'insert_into_item'      => __( 'Insert into comic', 'comixcore' ),
+        'uploaded_to_this_item' => __( 'Uploaded to this comic', 'comixcore' ),
+        'items_list'            => __( 'Comics list', 'comixcore' ),
+        'items_list_navigation' => __( 'Comics list navigation', 'comixcore' ),
+        'filter_items_list'     => __( 'Filter comics list', 'comixcore' ),
     );
     $args = array(
-        'label'                 => __( 'Comic', 'wyrdnorthwest' ),
-        'description'           => __( 'Comic page content', 'wyrdnorthwest' ),
+        'label'                 => __( 'Comic', 'comixcore' ),
+        'description'           => __( 'Comic page content', 'comixcore' ),
         'labels'                => $labels,
         'supports'              => array( 'title', 'editor', 'thumbnail', 'page-attributes' ), // 'page-attributes' for menu_order
         'taxonomies'            => array( 'comic_series', 'comic_issues' ),
@@ -212,31 +212,31 @@ function wyrdnorthwest_register_comic_post_type() {
     );
     register_post_type( 'comic', $args );
 }
-add_action( 'init', 'wyrdnorthwest_register_comic_post_type', 0 );
+add_action( 'init', 'comixcore_register_comic_post_type', 0 );
 
 // Register Custom Taxonomy: Comic Series
-function wyrdnorthwest_register_comic_series_taxonomy() {
+function comixcore_register_comic_series_taxonomy() {
     $labels = array(
-        'name'                       => _x( 'Comic Series', 'Taxonomy General Name', 'wyrdnorthwest' ),
-        'singular_name'              => _x( 'Comic Series', 'Taxonomy Singular Name', 'wyrdnorthwest' ),
-        'menu_name'                  => __( 'Comic Series', 'wyrdnorthwest' ),
-        'all_items'                  => __( 'All Series', 'wyrdnorthwest' ),
-        'parent_item'                => __( 'Parent Series', 'wyrdnorthwest' ),
-        'parent_item_colon'          => __( 'Parent Series:', 'wyrdnorthwest' ),
-        'new_item_name'              => __( 'New Series Name', 'wyrdnorthwest' ),
-        'add_new_item'               => __( 'Add New Series', 'wyrdnorthwest' ),
-        'edit_item'                  => __( 'Edit Series', 'wyrdnorthwest' ),
-        'update_item'                => __( 'Update Series', 'wyrdnorthwest' ),
-        'view_item'                  => __( 'View Series', 'wyrdnorthwest' ),
-        'separate_items_with_commas' => __( 'Separate series with commas', 'wyrdnorthwest' ),
-        'add_or_remove_items'        => __( 'Add or remove series', 'wyrdnorthwest' ),
-        'choose_from_most_used'      => __( 'Choose from the most used series', 'wyrdnorthwest' ),
-        'popular_items'              => __( 'Popular Series', 'wyrdnorthwest' ),
-        'search_items'               => __( 'Search Series', 'wyrdnorthwest' ),
-        'not_found'                  => __( 'Not Found', 'wyrdnorthwest' ),
-        'no_terms'                   => __( 'No series', 'wyrdnorthwest' ),
-        'items_list'                 => __( 'Series list', 'wyrdnorthwest' ),
-        'items_list_navigation'      => __( 'Series list navigation', 'wyrdnorthwest' ),
+        'name'                       => _x( 'Comic Series', 'Taxonomy General Name', 'comixcore' ),
+        'singular_name'              => _x( 'Comic Series', 'Taxonomy Singular Name', 'comixcore' ),
+        'menu_name'                  => __( 'Comic Series', 'comixcore' ),
+        'all_items'                  => __( 'All Series', 'comixcore' ),
+        'parent_item'                => __( 'Parent Series', 'comixcore' ),
+        'parent_item_colon'          => __( 'Parent Series:', 'comixcore' ),
+        'new_item_name'              => __( 'New Series Name', 'comixcore' ),
+        'add_new_item'               => __( 'Add New Series', 'comixcore' ),
+        'edit_item'                  => __( 'Edit Series', 'comixcore' ),
+        'update_item'                => __( 'Update Series', 'comixcore' ),
+        'view_item'                  => __( 'View Series', 'comixcore' ),
+        'separate_items_with_commas' => __( 'Separate series with commas', 'comixcore' ),
+        'add_or_remove_items'        => __( 'Add or remove series', 'comixcore' ),
+        'choose_from_most_used'      => __( 'Choose from the most used series', 'comixcore' ),
+        'popular_items'              => __( 'Popular Series', 'comixcore' ),
+        'search_items'               => __( 'Search Series', 'comixcore' ),
+        'not_found'                  => __( 'Not Found', 'comixcore' ),
+        'no_terms'                   => __( 'No series', 'comixcore' ),
+        'items_list'                 => __( 'Series list', 'comixcore' ),
+        'items_list_navigation'      => __( 'Series list navigation', 'comixcore' ),
     );
     $args = array(
         'labels'                     => $labels,
@@ -251,31 +251,31 @@ function wyrdnorthwest_register_comic_series_taxonomy() {
     );
     register_taxonomy( 'comic_series', array( 'comic' ), $args );
 }
-add_action( 'init', 'wyrdnorthwest_register_comic_series_taxonomy', 0 );
+add_action( 'init', 'comixcore_register_comic_series_taxonomy', 0 );
 
 // Register Custom Taxonomy: Comic Issues
-function wyrdnorthwest_register_comic_issues_taxonomy() {
+function comixcore_register_comic_issues_taxonomy() {
     $labels = array(
-        'name'                       => _x( 'Comic Issues', 'Taxonomy General Name', 'wyrdnorthwest' ),
-        'singular_name'              => _x( 'Comic Issue', 'Taxonomy Singular Name', 'wyrdnorthwest' ),
-        'menu_name'                  => __( 'Comic Issues', 'wyrdnorthwest' ),
-        'all_items'                  => __( 'All Issues', 'wyrdnorthwest' ),
-        'parent_item'                => __( 'Parent Issue', 'wyrdnorthwest' ),
-        'parent_item_colon'          => __( 'Parent Issue:', 'wyrdnorthwest' ),
-        'new_item_name'              => __( 'New Issue Name', 'wyrdnorthwest' ),
-        'add_new_item'               => __( 'Add New Issue', 'wyrdnorthwest' ),
-        'edit_item'                  => __( 'Edit Issue', 'wyrdnorthwest' ),
-        'update_item'                => __( 'Update Issue', 'wyrdnorthwest' ),
-        'view_item'                  => __( 'View Issue', 'wyrdnorthwest' ),
-        'separate_items_with_commas' => __( 'Separate issues with commas', 'wyrdnorthwest' ),
-        'add_or_remove_items'        => __( 'Add or remove issues', 'wyrdnorthwest' ),
-        'choose_from_most_used'      => __( 'Choose from the most used issues', 'wyrdnorthwest' ),
-        'popular_items'              => __( 'Popular Issues', 'wyrdnorthwest' ),
-        'search_items'               => __( 'Search Issues', 'wyrdnorthwest' ),
-        'not_found'                  => __( 'Not Found', 'wyrdnorthwest' ),
-        'no_terms'                   => __( 'No issues', 'wyrdnorthwest' ),
-        'items_list'                 => __( 'Issues list', 'wyrdnorthwest' ),
-        'items_list_navigation'      => __( 'Issues list navigation', 'wyrdnorthwest' ),
+        'name'                       => _x( 'Comic Issues', 'Taxonomy General Name', 'comixcore' ),
+        'singular_name'              => _x( 'Comic Issue', 'Taxonomy Singular Name', 'comixcore' ),
+        'menu_name'                  => __( 'Comic Issues', 'comixcore' ),
+        'all_items'                  => __( 'All Issues', 'comixcore' ),
+        'parent_item'                => __( 'Parent Issue', 'comixcore' ),
+        'parent_item_colon'          => __( 'Parent Issue:', 'comixcore' ),
+        'new_item_name'              => __( 'New Issue Name', 'comixcore' ),
+        'add_new_item'               => __( 'Add New Issue', 'comixcore' ),
+        'edit_item'                  => __( 'Edit Issue', 'comixcore' ),
+        'update_item'                => __( 'Update Issue', 'comixcore' ),
+        'view_item'                  => __( 'View Issue', 'comixcore' ),
+        'separate_items_with_commas' => __( 'Separate issues with commas', 'comixcore' ),
+        'add_or_remove_items'        => __( 'Add or remove issues', 'comixcore' ),
+        'choose_from_most_used'      => __( 'Choose from the most used issues', 'comixcore' ),
+        'popular_items'              => __( 'Popular Issues', 'comixcore' ),
+        'search_items'               => __( 'Search Issues', 'comixcore' ),
+        'not_found'                  => __( 'Not Found', 'comixcore' ),
+        'no_terms'                   => __( 'No issues', 'comixcore' ),
+        'items_list'                 => __( 'Issues list', 'comixcore' ),
+        'items_list_navigation'      => __( 'Issues list navigation', 'comixcore' ),
     );
     $args = array(
         'labels'                     => $labels,
@@ -290,7 +290,7 @@ function wyrdnorthwest_register_comic_issues_taxonomy() {
     );
     register_taxonomy( 'comic_issues', array( 'comic' ), $args );
 }
-add_action( 'init', 'wyrdnorthwest_register_comic_issues_taxonomy', 0 );
+add_action( 'init', 'comixcore_register_comic_issues_taxonomy', 0 );
 
 
 /**
@@ -300,21 +300,21 @@ add_action( 'init', 'wyrdnorthwest_register_comic_issues_taxonomy', 0 );
  */
 
 // 1. Add the meta box
-function wyrdnorthwest_add_comic_meta_box() {
+function comixcore_add_comic_meta_box() {
     add_meta_box(
         'comic_details_meta_box', // Unique ID
-        __( 'Comic Details', 'wyrdnorthwest' ), // Box title
-        'wyrdnorthwest_comic_meta_box_callback', // Callback function to display the box content
+        __( 'Comic Details', 'comixcore' ), // Box title
+        'comixcore_comic_meta_box_callback', // Callback function to display the box content
         'comic', // Post type to display on
         'normal', // Context (e.g., 'normal', 'side', 'advanced')
         'high' // Priority (e.g., 'high', 'core', 'default', 'low')
     );
 }
-add_action( 'add_meta_boxes', 'wyrdnorthwest_add_comic_meta_box' );
+add_action( 'add_meta_boxes', 'comixcore_add_comic_meta_box' );
 
 // 2. Callback function to display the fields
-function wyrdnorthwest_comic_meta_box_callback( $post ) {
-    wp_nonce_field( 'wyrdnorthwest_save_comic_meta_box_data', 'wyrdnorthwest_comic_meta_box_nonce' );
+function comixcore_comic_meta_box_callback( $post ) {
+    wp_nonce_field( 'comixcore_save_comic_meta_box_data', 'comixcore_comic_meta_box_nonce' );
 
     $comic_page_image_id = get_post_meta( $post->ID, '_comic_page_image_id', true );
     $comic_page_number = get_post_meta( $post->ID, '_comic_page_number', true );
@@ -330,38 +330,38 @@ function wyrdnorthwest_comic_meta_box_callback( $post ) {
     // Output fields
     ?>
     <p>
-        <label for="comic_page_image_id"><?php _e( 'Comic Page Image:', 'wyrdnorthwest' ); ?></label><br>
+        <label for="comic_page_image_id"><?php _e( 'Comic Page Image:', 'comixcore' ); ?></label><br>
         <input type="hidden" id="comic_page_image_id" name="_comic_page_image_id" value="<?php echo esc_attr( $comic_page_image_id ); ?>">
         <div id="comic-page-image-preview">
             <?php if ( $comic_page_image_id ) : ?>
                 <?php echo wp_get_attachment_image( $comic_page_image_id, 'medium' ); ?>
             <?php endif; ?>
         </div>
-        <button type="button" class="upload-button button" data-field-id="comic_page_image_id" data-preview-id="comic-page-image-preview"><?php _e( 'Select Image', 'wyrdnorthwest' ); ?></button>
-        <button type="button" class="remove-button button button-secondary" style="<?php echo $comic_page_image_id ? '' : 'display:none;'; ?>"><?php _e( 'Remove Image', 'wyrdnorthwest' ); ?></button>
+        <button type="button" class="upload-button button" data-field-id="comic_page_image_id" data-preview-id="comic-page-image-preview"><?php _e( 'Select Image', 'comixcore' ); ?></button>
+        <button type="button" class="remove-button button button-secondary" style="<?php echo $comic_page_image_id ? '' : 'display:none;'; ?>"><?php _e( 'Remove Image', 'comixcore' ); ?></button>
     </p>
 
     <p>
-        <label for="comic_page_number"><?php _e( 'Page Number:', 'wyrdnorthwest' ); ?></label><br>
+        <label for="comic_page_number"><?php _e( 'Page Number:', 'comixcore' ); ?></label><br>
         <input type="number" id="comic_page_number" name="_comic_page_number" value="<?php echo esc_attr( $comic_page_number ); ?>" min="1">
     </p>
 
     <p>
-        <label for="comic_display_style"><?php _e( 'Display Style:', 'wyrdnorthwest' ); ?></label><br>
+        <label for="comic_display_style"><?php _e( 'Display Style:', 'comixcore' ); ?></label><br>
         <select id="comic_display_style" name="_comic_display_style">
-            <option value="page_by_page" <?php selected( $comic_display_style, 'page_by_page' ); ?>><?php _e( 'Page by Page', 'wyrdnorthwest' ); ?></option>
-            <option value="vertical_scroll" <?php selected( $comic_display_style, 'vertical_scroll' ); ?>><?php _e( 'Vertical Scroll', 'wyrdnorthwest' ); ?></option>
+            <option value="page_by_page" <?php selected( $comic_display_style, 'page_by_page' ); ?>><?php _e( 'Page by Page', 'comixcore' ); ?></option>
+            <option value="vertical_scroll" <?php selected( $comic_display_style, 'vertical_scroll' ); ?>><?php _e( 'Vertical Scroll', 'comixcore' ); ?></option>
         </select>
     </p>
 
     <p>
-        <label for="next_comic_page_id"><?php _e( 'Next Comic Page ID (Optional):', 'wyrdnorthwest' ); ?></label><br>
+        <label for="next_comic_page_id"><?php _e( 'Next Comic Page ID (Optional):', 'comixcore' ); ?></label><br>
         <input type="number" id="next_comic_page_id" name="_next_comic_page_id" value="<?php echo esc_attr( $next_comic_page_id ); ?>">
         <p class="description">Enter the ID of the next comic page. Leave blank to automatically find based on menu order within the same issue.</p>
     </p>
 
     <p>
-        <label for="previous_comic_page_id"><?php _e( 'Previous Comic Page ID (Optional):', 'wyrdnorthwest' ); ?></label><br>
+        <label for="previous_comic_page_id"><?php _e( 'Previous Comic Page ID (Optional):', 'comixcore' ); ?></label><br>
         <input type="number" id="previous_comic_page_id" name="_previous_comic_page_id" value="<?php echo esc_attr( $previous_comic_page_id ); ?>">
         <p class="description">Enter the ID of the previous comic page. Leave blank to automatically find based on menu order within the same issue.</p>
     </p>
@@ -369,14 +369,14 @@ function wyrdnorthwest_comic_meta_box_callback( $post ) {
 }
 
 // 3. Save the meta box data
-function wyrdnorthwest_save_comic_meta_box_data( $post_id ) {
+function comixcore_save_comic_meta_box_data( $post_id ) {
     // Check if our nonce is set.
-    if ( ! isset( $_POST['wyrdnorthwest_comic_meta_box_nonce'] ) ) {
+    if ( ! isset( $_POST['comixcore_comic_meta_box_nonce'] ) ) {
         return;
     }
 
     // Verify that the nonce is valid.
-    if ( ! wp_verify_nonce( $_POST['wyrdnorthwest_comic_meta_box_nonce'], 'wyrdnorthwest_save_comic_meta_box_data' ) ) {
+    if ( ! wp_verify_nonce( $_POST['comixcore_comic_meta_box_nonce'], 'comixcore_save_comic_meta_box_data' ) ) {
         return;
     }
 
@@ -417,7 +417,7 @@ function wyrdnorthwest_save_comic_meta_box_data( $post_id ) {
         delete_post_meta( $post_id, '_previous_comic_page_id' ); // Allow unsetting if desired
     }
 }
-add_action( 'save_post', 'wyrdnorthwest_save_comic_meta_box_data' );
+add_action( 'save_post', 'comixcore_save_comic_meta_box_data' );
 
 
 /**
@@ -427,29 +427,29 @@ add_action( 'save_post', 'wyrdnorthwest_save_comic_meta_box_data' );
  */
 
 // 1. Add custom field for Series Logo Image to 'Add New Series' screen
-function wyrd_northwest_add_comic_series_logo_field() {
+function ComixCore_add_comic_series_logo_field() {
     ?>
     <div class="form-field term-logo-wrap">
-        <label for="series-logo"><?php _e( 'Series Logo', 'wyrdnorthwest' ); ?></label>
+        <label for="series-logo"><?php _e( 'Series Logo', 'comixcore' ); ?></label>
         <input type="hidden" id="series-logo-id" name="series_logo_id" value="">
         <div id="series-logo-preview" class="series-logo-preview">
             <?php // No image preview for new terms ?>
         </div>
-        <button type="button" class="upload-button button" data-field-id="series-logo-id" data-preview-id="series-logo-preview"><?php _e( 'Upload/Add Image', 'wyrdnorthwest' ); ?></button>
-        <button type="button" class="remove-button button button-secondary" style="display:none;"><?php _e( 'Remove Image', 'wyrdnorthwest' ); ?></button>
-        <p class="description"><?php _e( 'Upload an image for the comic series logo.', 'wyrdnorthwest' ); ?></p>
+        <button type="button" class="upload-button button" data-field-id="series-logo-id" data-preview-id="series-logo-preview"><?php _e( 'Upload/Add Image', 'comixcore' ); ?></button>
+        <button type="button" class="remove-button button button-secondary" style="display:none;"><?php _e( 'Remove Image', 'comixcore' ); ?></button>
+        <p class="description"><?php _e( 'Upload an image for the comic series logo.', 'comixcore' ); ?></p>
     </div>
     <?php
 }
-add_action( 'comic_series_add_form_fields', 'wyrd_northwest_add_comic_series_logo_field', 10, 2 );
+add_action( 'comic_series_add_form_fields', 'ComixCore_add_comic_series_logo_field', 10, 2 );
 
 // 2. Add custom field for Series Logo Image to 'Edit Series' screen
-function wyrd_northwest_edit_comic_series_logo_field( $term ) {
+function ComixCore_edit_comic_series_logo_field( $term ) {
     $series_logo_id = get_term_meta( $term->term_id, 'series_logo_id', true );
     $series_logo_url = $series_logo_id ? wp_get_attachment_image_url( $series_logo_id, 'thumbnail' ) : ''; // Using 'thumbnail' for admin preview
     ?>
     <tr class="form-field term-logo-wrap">
-        <th scope="row"><label for="series-logo"><?php _e( 'Series Logo', 'wyrdnorthwest' ); ?></label></th>
+        <th scope="row"><label for="series-logo"><?php _e( 'Series Logo', 'comixcore' ); ?></label></th>
         <td>
             <input type="hidden" id="series-logo-id" name="series_logo_id" value="<?php echo esc_attr( $series_logo_id ); ?>">
             <div id="series-logo-preview" class="series-logo-preview">
@@ -457,24 +457,24 @@ function wyrd_northwest_edit_comic_series_logo_field( $term ) {
                     <img src="<?php echo esc_url( $series_logo_url ); ?>" style="max-width:150px; height:auto;" />
                 <?php endif; ?>
             </div>
-            <button type="button" class="upload-button button" data-field-id="series-logo-id" data-preview-id="series-logo-preview"><?php _e( 'Upload/Add Image', 'wyrdnorthwest' ); ?></button>
-            <button type="button" class="remove-button button button-secondary" <?php echo $series_logo_id ? '' : 'style="display:none;"'; ?>><?php _e( 'Remove Image', 'wyrdnorthwest' ); ?></button>
-            <p class="description"><?php _e( 'Upload an image for the comic series logo.', 'wyrdnorthwest' ); ?></p>
+            <button type="button" class="upload-button button" data-field-id="series-logo-id" data-preview-id="series-logo-preview"><?php _e( 'Upload/Add Image', 'comixcore' ); ?></button>
+            <button type="button" class="remove-button button button-secondary" <?php echo $series_logo_id ? '' : 'style="display:none;"'; ?>><?php _e( 'Remove Image', 'comixcore' ); ?></button>
+            <p class="description"><?php _e( 'Upload an image for the comic series logo.', 'comixcore' ); ?></p>
         </td>
     </tr>
     <?php
 }
-add_action( 'comic_series_edit_form_fields', 'wyrd_northwest_edit_comic_series_logo_field', 10, 2 );
+add_action( 'comic_series_edit_form_fields', 'ComixCore_edit_comic_series_logo_field', 10, 2 );
 
 // 3. Save the Series Logo Image field
-function wyrd_northwest_save_comic_series_logo_field( $term_id ) {
+function ComixCore_save_comic_series_logo_field( $term_id ) {
     if ( isset( $_POST['series_logo_id'] ) ) {
         $logo_id = absint( $_POST['series_logo_id'] ); // Sanitize ID
         update_term_meta( $term_id, 'series_logo_id', $logo_id );
     }
 }
-add_action( 'create_comic_series', 'wyrd_northwest_save_comic_series_logo_field' );
-add_action( 'edit_comic_series', 'wyrd_northwest_save_comic_series_logo_field' );
+add_action( 'create_comic_series', 'ComixCore_save_comic_series_logo_field' );
+add_action( 'edit_comic_series', 'ComixCore_save_comic_series_logo_field' );
 
 /**
  * ----------------------------------------------------------------------------------------------------
@@ -483,29 +483,29 @@ add_action( 'edit_comic_series', 'wyrd_northwest_save_comic_series_logo_field' )
  */
 
 // 1. Add custom field for Comic Issue Cover Image to 'Add New Issue' screen
-function wyrd_northwest_add_comic_issue_cover_field() {
+function ComixCore_add_comic_issue_cover_field() {
     ?>
     <div class="form-field term-cover-wrap">
-        <label for="issue-cover-id"><?php _e( 'Issue Cover', 'wyrdnorthwest' ); ?></label>
+        <label for="issue-cover-id"><?php _e( 'Issue Cover', 'comixcore' ); ?></label>
         <input type="hidden" id="issue-cover-id" name="issue_cover_id" value="">
         <div id="issue-cover-preview" class="issue-cover-preview">
             <?php // No image preview for new terms ?>
         </div>
-        <button type="button" class="upload-button button" data-field-id="issue-cover-id" data-preview-id="issue-cover-preview"><?php _e( 'Upload/Add Image', 'wyrdnorthwest' ); ?></button>
-        <button type="button" class="remove-button button button-secondary" style="display:none;"><?php _e( 'Remove Image', 'wyrdnorthwest' ); ?></button>
-        <p class="description"><?php _e( 'Upload an image for the issue cover.', 'wyrdnorthwest' ); ?></p>
+        <button type="button" class="upload-button button" data-field-id="issue-cover-id" data-preview-id="issue-cover-preview"><?php _e( 'Upload/Add Image', 'comixcore' ); ?></button>
+        <button type="button" class="remove-button button button-secondary" style="display:none;"><?php _e( 'Remove Image', 'comixcore' ); ?></button>
+        <p class="description"><?php _e( 'Upload an image for the issue cover.', 'comixcore' ); ?></p>
     </div>
     <?php
 }
-add_action( 'comic_issues_add_form_fields', 'wyrd_northwest_add_comic_issue_cover_field', 10, 2 );
+add_action( 'comic_issues_add_form_fields', 'ComixCore_add_comic_issue_cover_field', 10, 2 );
 
 // 2. Add custom field for Comic Issue Cover Image to 'Edit Issue' screen
-function wyrd_northwest_edit_comic_issue_cover_field( $term ) {
+function ComixCore_edit_comic_issue_cover_field( $term ) {
     $issue_cover_id = get_term_meta( $term->term_id, 'issue_cover_id', true );
     $issue_cover_url = $issue_cover_id ? wp_get_attachment_image_url( $issue_cover_id, 'thumbnail' ) : ''; // Using 'thumbnail' for admin preview
     ?>
     <tr class="form-field term-cover-wrap">
-        <th scope="row"><label for="issue-cover-id"><?php _e( 'Issue Cover', 'wyrdnorthwest' ); ?></label></th>
+        <th scope="row"><label for="issue-cover-id"><?php _e( 'Issue Cover', 'comixcore' ); ?></label></th>
         <td>
             <input type="hidden" id="issue-cover-id" name="issue_cover_id" value="<?php echo esc_attr( $issue_cover_id ); ?>">
             <div id="issue-cover-preview" class="issue-cover-preview">
@@ -513,48 +513,51 @@ function wyrd_northwest_edit_comic_issue_cover_field( $term ) {
                     <img src="<?php echo esc_url( $issue_cover_url ); ?>" style="max-width:150px; height:auto;" />
                 <?php endif; ?>
             </div>
-            <button type="button" class="upload-button button" data-field-id="issue-cover-id" data-preview-id="issue-cover-preview"><?php _e( 'Upload/Add Image', 'wyrdnorthwest' ); ?></button>
-            <button type="button" class="remove-button button button-secondary" <?php echo $issue_cover_id ? '' : 'style="display:none;"'; ?>><?php _e( 'Remove Image', 'wyrdnorthwest' ); ?></button>
-            <p class="description"><?php _e( 'Upload an image for the issue cover.', 'wyrdnorthwest' ); ?></p>
+            <button type="button" class="upload-button button" data-field-id="issue-cover-id" data-preview-id="issue-cover-preview"><?php _e( 'Upload/Add Image', 'comixcore' ); ?></button>
+            <button type="button" class="remove-button button button-secondary" <?php echo $issue_cover_id ? '' : 'style="display:none;"'; ?>><?php _e( 'Remove Image', 'comixcore' ); ?></button>
+            <p class="description"><?php _e( 'Upload an image for the issue cover.', 'comixcore' ); ?></p>
         </td>
     </tr>
     <?php
 }
-add_action( 'comic_issues_edit_form_fields', 'wyrd_northwest_edit_comic_issue_cover_field', 10, 2 );
+add_action( 'comic_issues_edit_form_fields', 'ComixCore_edit_comic_issue_cover_field', 10, 2 );
 
 // 3. Save the Comic Issue Cover Image field
-function wyrd_northwest_save_comic_issue_cover_field( $term_id ) {
+function ComixCore_save_comic_issue_cover_field( $term_id ) {
     if ( isset( $_POST['issue_cover_id'] ) ) {
         $cover_id = absint( $_POST['issue_cover_id'] ); // Sanitize ID
         update_term_meta( $term_id, 'issue_cover_id', $cover_id );
     }
 }
-add_action( 'create_comic_issues', 'wyrd_northwest_save_comic_issue_cover_field' );
-add_action( 'edit_comic_issues', 'wyrd_northwest_save_comic_issue_cover_field' );
-
+add_action( 'create_comic_issues', 'ComixCore_save_comic_issue_cover_field' );
+add_action( 'edit_comic_issues', 'ComixCore_save_comic_issue_cover_field' );
 
 /**
  * ----------------------------------------------------------------------------------------------------
- * Enqueue Admin Scripts for Media Uploader (Updated for Series and Issues)
+ * Enqueue Admin Scripts for Media Uploader (Updated for Series, Issues, AND Comic Post Type)
  * ----------------------------------------------------------------------------------------------------
  */
 
 // 4. Enqueue WordPress media uploader and custom JS for admin screens
 function wyrd_northwest_admin_enqueue_scripts() {
-    // Only load on comic series or comic issues taxonomy edit/add screens
-    $is_comic_series_screen = ( 'edit-tags.php' === $GLOBALS['pagenow'] && isset( $_GET['taxonomy'] ) && 'comic_series' === $_GET['taxonomy'] ) ||
-                              ( 'term.php' === $GLOBALS['pagenow'] && isset( $_GET['taxonomy'] ) && 'comic_series' === $_GET['taxonomy'] );
-    $is_comic_issues_screen = ( 'edit-tags.php' === $GLOBALS['pagenow'] && isset( $_GET['taxonomy'] ) && 'comic_issues' === $_GET['taxonomy'] ) ||
-                              ( 'term.php' === $GLOBALS['pagenow'] && isset( $_GET['taxonomy'] ) && 'comic_issues' === $_GET['taxonomy'] );
+    // Determine if we are on a relevant admin screen for our custom media uploader
+    $screen = get_current_screen();
 
-    if ( $is_comic_series_screen || $is_comic_issues_screen ) {
-        wp_enqueue_media(); // Enqueue WordPress media uploader scripts
+    // Check if we are on a comic post type screen OR a comic series/issues taxonomy screen
+    $is_comic_post_screen = ( 'post' === $screen->base && 'comic' === $screen->post_type );
+    $is_comic_series_screen = ( 'edit-tags' === $screen->base && 'comic_series' === $screen->taxonomy ) ||
+                              ( 'term' === $screen->base && 'comic_series' === $screen->taxonomy );
+    $is_comic_issues_screen = ( 'edit-tags' === $screen->base && 'comic_issues' === $screen->taxonomy ) ||
+                              ( 'term' === $screen->base && 'comic_issues' === $screen->taxonomy );
+
+    if ( $is_comic_post_screen || $is_comic_series_screen || $is_comic_issues_screen ) {
+        // Enqueue WordPress media uploader scripts
+        wp_enqueue_media();
         // Enqueue custom JS from js/media-uploader.js
         wp_enqueue_script( 'wyrd-northwest-media-uploader', get_template_directory_uri() . '/js/media-uploader.js', array( 'jquery' ), null, true );
     }
 }
 add_action( 'admin_enqueue_scripts', 'wyrd_northwest_admin_enqueue_scripts' );
-
 
 /**
  * ----------------------------------------------------------------------------------------------------
@@ -563,7 +566,7 @@ add_action( 'admin_enqueue_scripts', 'wyrd_northwest_admin_enqueue_scripts' );
  * for specific archive views (e.g., comic_series, comic_issues).
  * ----------------------------------------------------------------------------------------------------
  */
-function wyrdnorthwest_pre_get_posts_for_comics( $query ) {
+function comixcore_pre_get_posts_for_comics( $query ) {
     // Ensure this is the main query and not in the admin
     if ( ! is_admin() && $query->is_main_query() ) {
         // For 'comic_series' archives, we want to display issues, not individual comic posts in the main loop here.
@@ -588,7 +591,7 @@ function wyrdnorthwest_pre_get_posts_for_comics( $query ) {
         }
     }
 }
-add_action( 'pre_get_posts', 'wyrdnorthwest_pre_get_posts_for_comics' );
+add_action( 'pre_get_posts', 'comixcore_pre_get_posts_for_comics' );
 
 // Allow redirects on taxonomy-comic_issues.php
 // This might not be strictly necessary if wp_redirect is used before get_header(),

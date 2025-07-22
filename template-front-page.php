@@ -5,7 +5,7 @@
  * content directly created using WordPress blocks (e.g., Columns Block)
  * with an embedded logo image.
  *
- * @package Wyrd_Northwest
+ * @package ComixCore
  */
 
 get_header(); // Loads the theme's header.php ?>

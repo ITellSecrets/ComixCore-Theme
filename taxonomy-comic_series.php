@@ -4,7 +4,7 @@
  * This version is designed to display individual 'comic' posts belonging to the series,
  * without relying on Advanced Custom Fields (ACF) for content or relationships.
  *
- * @package Wyrd_Northwest
+ * @package ComixCore
  */
 
 get_header(); ?>

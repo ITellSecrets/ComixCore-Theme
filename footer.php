@@ -12,14 +12,14 @@
                         date( 'Y' ),
                         get_bloginfo( 'name' )
                     );
-                    $copyright_text = get_theme_mod( 'comicxcore_copyright', $default_copyright );
+                    $copyright_text = get_theme_mod( 'comixcore_copyright', $default_copyright );
                     echo wp_kses_post( $copyright_text );
                     ?>
                     <span class="sep"> | </span>
                     <?php
                     printf(
-                        esc_html__( 'Proudly powered by %s', 'comicxcore' ),
-                        '<a href="' . esc_url( __( 'https://wordpress.org/', 'comicxcore' ) ) . '">WordPress</a>'
+                        esc_html__( 'Proudly powered by %s', 'comixcore' ),
+                        '<a href="' . esc_url( __( 'https://wordpress.org/', 'comixcore' ) ) . '">WordPress</a>'
                     );
                     ?>
                 </div></div></footer></div><?php wp_footer(); ?>

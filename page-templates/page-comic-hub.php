@@ -3,7 +3,7 @@
  * Template Name: Comic Hub Page
  * Description: Displays a list of all comic series with their logos.
  *
- * @package Wyrd_Northwest
+ * @package ComixCore
  */
 
 get_header(); // Loads the header.php template

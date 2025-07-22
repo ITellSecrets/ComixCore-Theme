@@ -4,39 +4,39 @@
  *
  * @link https://developer.wordpress.org/themes/functionality/custom-headers/
  *
- * @package ComicxCore
+ * @package ComixCore
  */
 
 /**
  * Set up the WordPress core custom header feature.
  *
- * @uses comicxcore_header_style()
+ * @uses comixcore_header_style()
  */
-function comicxcore_custom_header_setup() {
+function comixcore_custom_header_setup() {
 	add_theme_support(
 		'custom-header',
 		apply_filters(
-			'comicxcore_custom_header_args',
+			'comixcore_custom_header_args',
 			array(
 				'default-image'      => '',
 				'default-text-color' => '000000',
 				'width'              => 1000,
 				'height'             => 250,
 				'flex-height'        => true,
-				'wp-head-callback'   => 'comicxcore_header_style',
+				'wp-head-callback'   => 'comixcore_header_style',
 			)
 		)
 	);
 }
-add_action( 'after_setup_theme', 'comicxcore_custom_header_setup' );
+add_action( 'after_setup_theme', 'comixcore_custom_header_setup' );
 
-if ( ! function_exists( 'comicxcore_header_style' ) ) :
+if ( ! function_exists( 'comixcore_header_style' ) ) :
 	/**
 	 * Styles the header image and text displayed on the front end.
 	 *
-	 * @see comicxcore_custom_header_setup().
+	 * @see comixcore_custom_header_setup().
 	 */
-	function comicxcore_header_style() {
+	function comixcore_header_style() {
 		$header_text_color = get_header_textcolor();
 
 		/*

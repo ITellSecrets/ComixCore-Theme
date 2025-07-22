@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
  *
- * @package ComixHelper Theme
+ * @package ComixCore
  */
 
 get_header(); ?>
@@ -19,16 +19,13 @@ get_header(); ?>
             // Get Series terms
             $series_terms = get_the_terms( get_the_ID(), 'comic_series' );
             $series_name = '';
-            $current_series_id = 0; // Initialize
             if ( ! is_wp_error( $series_terms ) && ! empty( $series_terms ) ) {
                 $series_name = $series_terms[0]->name; // Assuming one series per comic
-                $current_series_id = $series_terms[0]->term_id; // Get the ID of the current series
             }
 
             // Get Issue terms
             $issue_terms = get_the_terms( get_the_ID(), 'comic_issues' );
             $issue_name = '';
-            $current_issue_term = null;
             if ( ! is_wp_error( $issue_terms ) && ! empty( $issue_terms ) ) {
                 $current_issue_term = $issue_terms[0]; // Assuming one issue per comic page
                 $issue_name = $current_issue_term->name;
@@ -37,138 +34,154 @@ get_header(); ?>
             // Get custom field values using native WordPress get_post_meta()
             $comic_page_image_id = get_post_meta( get_the_ID(), '_comic_page_image_id', true );
             $comic_page_number = get_post_meta( get_the_ID(), '_comic_page_number', true );
-            $comic_display_style = get_post_meta( get_the_ID(), '_comic_display_style', true );
-
-            // Determine if this comic is part of a vertical scroll issue
-            $is_vertical_issue = ($comic_display_style === 'vertical_scroll' && $current_issue_term);
-
-            // If it's a vertical scroll issue, redirect to the issue archive page
-            // This ensures individual pages within a vertical issue aren't directly accessed
-            if ( $is_vertical_issue ) {
-                $issue_archive_link = get_term_link( $current_issue_term->term_id, 'comic_issues' );
-                if ( ! is_wp_error( $issue_archive_link ) ) {
-                    wp_redirect( $issue_archive_link );
-                    exit; // Stop further execution after redirection
-                }
+            $display_style = get_post_meta( get_the_ID(), '_comic_display_style', true );
+            // Default display style if not set
+            if ( empty( $display_style ) ) {
+                $display_style = 'page';
             }
 
-            $comic_page_image_url = $comic_page_image_id ? wp_get_attachment_image_url( $comic_page_image_id, 'full' ) : '';
-            $comic_page_image_alt = $comic_page_image_id ? get_post_meta( $comic_page_image_id, '_wp_attachment_image_alt', true ) : '';
             ?>
-
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                 <header class="entry-header">
-                    <?php if ( $series_name ) : ?>
-                        <h3 class="comic-series-title"><?php echo esc_html( $series_name ); ?></h3>
-                    <?php endif; ?>
-                    <?php if ( $issue_name ) : ?>
-                        <h4 class="comic-issue-title"><?php echo esc_html( $issue_name ); ?></h4>
-                    <?php endif; ?>
-                    <?php if ( $comic_page_number ) : ?>
-                        <p class="comic-page-number">Page <?php echo esc_html( $comic_page_number ); ?></p>
-                    <?php endif; ?>
-                </header><div class="entry-content comic-content">
-                    <?php if ( $comic_page_image_url ) : ?>
-                        <div class="comic-image-wrapper">
-                            <img src="<?php echo esc_url( $comic_page_image_url ); ?>" alt="<?php echo esc_attr( $comic_page_image_alt ? $comic_page_image_alt : get_the_title() ); ?>" class="comic-page-image" />
-                        </div>
-                    <?php else : ?>
-                        <div class="comic-image-placeholder">
-                            <p>Image missing for <?php the_title(); ?>!</p>
-                        </div>
-                    <?php endif; ?>
-                </div><footer class="entry-footer">
-                    <nav class="comic-navigation" role="navigation">
-                        <?php
-                        // Current Post ID
-                        $current_post_id = get_the_ID();
+                    <?php
+                    // The comic meta information now serves as the primary page header (H4)
+                    echo '<h4 class="comic-meta entry-title">';
+                    $meta_parts_html = [];
 
-                        // --- Logic for First, Previous, Next, Last Page Navigation ---
-                        $first_page_link = '';
-                        $prev_page_link = '';
-                        $next_page_link = '';
-                        $last_page_link = '';
+                    if ( $series_name ) {
+                        $meta_parts_html[] = '<span class="comic-series">Series: ' . esc_html( $series_name ) . '</span>';
+                    }
+                    if ( $issue_name ) {
+                        $meta_parts_html[] = '<span class="comic-issue">Issue: ' . esc_html( $issue_name ) . '</span>';
+                    }
 
-                        if ( $current_series_id ) {
-                            // Query all comic posts in the current series, ordered by _comic_page_number
-                            $all_comics_in_series_args = array(
-                                'post_type'      => 'comic',
-                                'posts_per_page' => -1, // Get all posts
-                                'meta_key'       => '_comic_page_number',
-                                'orderby'        => 'meta_value_num',
-                                'order'          => 'ASC',
-                                'tax_query'      => array(
-                                    array(
-                                        'taxonomy' => 'comic_series',
-                                        'field'    => 'term_id',
-                                        'terms'    => $current_series_id,
-                                    ),
+                    // Only show page number if NOT in 'vertical' display style
+                    if ( $display_style !== 'vertical' && $comic_page_number !== false && $comic_page_number !== null && $comic_page_number !== '' ) {
+                        if ( $comic_page_number == 0 ) {
+                            $meta_parts_html[] = '<span class="comic-page-number">Cover</span>';
+                        } else {
+                            $meta_parts_html[] = '<span class="comic-page-number">Page: ' . esc_html( $comic_page_number ) . '</span>';
+                        }
+                    }
+
+                    // Output each part, adding a separator span between them
+                    $count = count($meta_parts_html);
+                    for ($i = 0; $i < $count; $i++) {
+                        echo $meta_parts_html[$i];
+                        if ($i < $count - 1) {
+                            echo '<span class="meta-separator"> &mdash; </span>';
+                        }
+                    }
+                    echo '</h4>';
+                    ?>
+                </header><div class="entry-content">
+                    <?php
+                    // Check if display style is 'vertical'
+                    if ( $display_style === 'vertical' ) {
+                        // If 'vertical' mode, assume images are in the main post content (using Gallery Block or Image Blocks)
+                        echo '<div class="comic-vertical-scroll-wrapper">';
+                        the_content(); // This will output the WordPress editor content (your gallery/images)
+                        echo '</div>';
+                    } else {
+                        // If not 'vertical' mode, display the single comic page image from native custom field
+                        $image_displayed = false;
+
+                        // Get image URL from ID
+                        $comic_page_image_url = $comic_page_image_id ? wp_get_attachment_image_url( $comic_page_image_id, 'full' ) : '';
+                        $comic_page_image_alt = $comic_page_image_id ? get_post_meta( $comic_page_image_id, '_wp_attachment_image_alt', true ) : '';
+
+                        // Always try to display the comic page image (covers will also use this now)
+                        if ( $comic_page_image_url ) {
+                            echo '<div class="comic-image-wrapper">';
+                            echo '<img src="' . esc_url($comic_page_image_url) . '" alt="' . esc_attr($comic_page_image_alt ? $comic_page_image_alt : get_the_title()) . '" class="comic-page-image" />';
+                            echo '</div>';
+                            $image_displayed = true;
+                        }
+
+                        // Optional: Fallback if no image was displayed at all for single-page mode
+                        if (!$image_displayed) {
+                            ?>
+                            <div class="comic-image-placeholder">
+                                <p>Image missing for <?php the_title(); ?>!</p>
+                            </div>
+                            <?php
+                        }
+
+                        // IMPORTANT: If you want any text/content placed in the main WordPress editor
+                        // to appear BELOW the image for single-page comics, uncomment the line below.
+                        // For now, it's assumed single-page comics rely purely on the native custom image.
+                        // the_content();
+                    }
+                    ?>
+                </div>
+                <footer class="entry-footer">
+                    <nav class="comic-navigation">
+                    <?php
+                    // Get the current issue term ID to properly query previous/next posts within the same issue
+                    $current_comic_issues_terms = get_the_terms( get_the_ID(), 'comic_issues' );
+                    $current_comic_issue_id = 0;
+                    if ( ! is_wp_error( $current_comic_issues_terms ) && ! empty( $current_comic_issues_terms ) ) {
+                        $current_comic_issue_id = $current_comic_issues_terms[0]->term_id; // Assuming one issue per comic page
+                    }
+
+                    $prev_post_link = '';
+                    $next_post_link = '';
+
+                    if ( $current_comic_issue_id ) {
+                        // Get all comic pages for the current issue, ordered by _comic_page_number
+                        // We fetch only IDs for efficiency
+                        $all_comic_pages_in_issue_ids = get_posts( array(
+                            'post_type'      => 'comic',
+                            'posts_per_page' => -1, // Get all posts
+                            'meta_key'       => '_comic_page_number', // Order by this custom field
+                            'orderby'        => 'meta_value_num',     // Treat the meta value as a number for sorting
+                            'order'          => 'ASC',
+                            'tax_query'      => array(
+                                array(
+                                    'taxonomy' => 'comic_issues',
+                                    'field'    => 'term_id',
+                                    'terms'    => $current_comic_issue_id,
                                 ),
-                                'post_status'    => 'publish',
-                                'fields'         => 'ids', // Get only IDs for efficiency
-                            );
-                            $all_comics_in_series_query = new WP_Query( $all_comics_in_series_args );
-                            $comic_ids_in_series = $all_comics_in_series_query->posts;
+                            ),
+                            'post_status'    => 'publish', // Only consider published comics
+                            'fields'         => 'ids', // Only need post IDs
+                        ) );
 
-                            if ( ! empty( $comic_ids_in_series ) ) {
-                                $current_comic_index = array_search( $current_post_id, $comic_ids_in_series );
+                        $current_post_id = get_the_ID();
+                        // Find the index of the current post in the ordered list
+                        $current_index = array_search( $current_post_id, $all_comic_pages_in_issue_ids );
 
-                                // First Page Link
-                                $first_comic_id = $comic_ids_in_series[0];
-                                if ( $current_post_id != $first_comic_id ) {
-                                    $first_page_link = get_permalink( $first_comic_id );
-                                }
-
-                                // Previous Page Link
-                                if ( $current_comic_index !== false && isset( $comic_ids_in_series[ $current_comic_index - 1 ] ) ) {
-                                    $prev_page_link = get_permalink( $comic_ids_in_series[ $current_comic_index - 1 ] );
-                                }
-
-                                // Next Page Link
-                                if ( $current_comic_index !== false && isset( $comic_ids_in_series[ $current_comic_index + 1 ] ) ) {
-                                    $next_page_link = get_permalink( $comic_ids_in_series[ $current_comic_index + 1 ] );
-                                }
-
-                                // Last Page Link
-                                $last_comic_id = end( $comic_ids_in_series ); // Get the last ID
-                                if ( $current_post_id != $last_comic_id ) {
-                                    $last_page_link = get_permalink( $last_comic_id );
-                                }
+                        if ( $current_index !== false ) {
+                            // Check for previous page
+                            if ( isset( $all_comic_pages_in_issue_ids[ $current_index - 1 ] ) ) {
+                                $prev_post_link = get_permalink( $all_comic_pages_in_issue_ids[ $current_index - 1 ] );
                             }
-                            wp_reset_postdata(); // Reset query for safety (after our custom query)
-                        }
 
-                        // --- Display Navigation Links (with placeholders for consistent spacing) ---
-
-                        // First Page
-                        if ( $first_page_link ) {
-                            echo '<span class="nav-first-page"><a href="' . esc_url($first_page_link) . '" rel="first">&larr; First Page</a></span>';
-                        } else {
-                            echo '<span class="nav-first-page disabled"></span>';
+                            // Check for next page
+                            if ( isset( $all_comic_pages_in_issue_ids[ $current_index + 1 ] ) ) {
+                                $next_post_link = get_permalink( $all_comic_pages_in_issue_ids[ $current_index + 1 ] );
+                            }
                         }
+                    }
 
-                        // Previous Page
-                        if( $prev_page_link ) {
-                            echo '<span class="nav-previous"><a href="' . esc_url($prev_page_link) . '" rel="prev">&larr; Previous Page</a></span>';
-                        } else {
-                            echo '<span class="nav-previous disabled"></span>';
-                        }
+                    // Determine if previous or next comics exist to conditionally add placeholder
+                    $prev_comic_exists = !empty($prev_post_link);
+                    $next_comic_exists = !empty($next_post_link);
 
-                        // Next Page
-                        if( $next_page_link ) {
-                            echo '<span class="nav-next"><a href="' . esc_url($next_page_link) . '" rel="next">Next Page &rarr;</a></span>';
-                        } else {
-                            echo '<span class="nav-next disabled"></span>';
-                        }
+                    // If only the 'Next Page' link exists, add an empty div to push it to the right
+                    if ( !$prev_comic_exists && $next_comic_exists ) {
+                        echo '<div></div>'; // This empty div acts as a spacer
+                    }
 
-                        // Last Page
-                        if ( $last_page_link ) {
-                            echo '<span class="nav-last-page"><a href="' . esc_url($last_page_link) . '" rel="last">Last Page &rarr;</a></span>';
-                        } else {
-                            echo '<span class="nav-last-page disabled"></span>';
-                        }
-                        ?>
-                    </nav>
+                    if( $prev_comic_exists ) {
+                        echo '<span class="nav-previous"><a href="' . esc_url($prev_post_link) . '" rel="prev">&larr; Previous Page</a></span>';
+                    }
+
+                    if( $next_comic_exists ) {
+                        echo '<span class="nav-next"><a href="' . esc_url($next_post_link) . '" rel="next">Next Page &rarr;</a></span>';
+                    }
+                    ?>
+                </nav>
                 </footer>
             </article>
         <?php

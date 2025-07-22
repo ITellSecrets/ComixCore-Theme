@@ -9,7 +9,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Wyrd_Northwest
+ * @package ComixCore
  */
 
 get_header();

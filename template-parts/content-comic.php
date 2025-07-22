@@ -4,7 +4,7 @@
  * This file should NOT contain its own WordPress loop (e.g., while(have_posts())).
  * It is called by taxonomy-comic_series.php for each comic found.
  *
- * @package Wyrd_Northwest
+ * @package ComixCore
  */
 ?>
 
