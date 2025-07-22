@@ -1,0 +1,492 @@
+/*
+Theme Name: ComixCore
+Theme URI: https://wyrdnorthwest.com/comixcore
+Author: ITS Comics
+Author URI: [www.wyrdnorthwest.com]
+Description: A free open-source WordPress comic theme.
+Version: 1.0
+Requires at least: 6.0
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: comixcore
+Tags: comics, graphic-novel, webcomic, responsive, custom-post-type
+*/
+
+/* ==========================================================================
+   Base Theme Styles (Minimalist but Sharp)
+   ========================================================================== */
+
+/* Overall Site Layout and Background */
+body {
+    font-family: Arial, sans-serif; /* A generic, clean sans-serif font */
+    color: #333; /* Standard dark gray for text */
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5; /* A very light gray background for the overall site */
+    line-height: 1.6; /* Improve readability for body text */
+}
+
+/* Main Content Area Container */
+#primary {
+    max-width: 960px; /* Limit content width for better readability on large screens */
+    margin: 20px auto; /* Center the content area and add vertical spacing */
+    background-color: #ffffff; /* White background for the content box */
+    padding: 30px; /* More generous padding inside the content box */
+    border-radius: 8px; /* Slightly rounded corners for a softer look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #333; /* Consistent dark color for all headings */
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    line-height: 1.2; /* Tighter line-height for headings */
+}
+
+/* Links */
+a {
+    color: #0073aa; /* WordPress default blue for links */
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
+/* Site Header (top bar where site title/description goes) */
+.site-header {
+    background-color: #222; /* Dark, neutral header background */
+    padding: 15px 0; /* Adjusted: Slimmer header - reduced from 20px */
+    color: #fff; /* White text for contrast */
+    text-align: center; /* Center header content */
+}
+
+.site-title a,
+.site-description {
+    color: #fff; /* White color for site title and description */
+    text-decoration: none;
+}
+
+.site-title {
+    font-size: 2.5em; /* Larger site title */
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+.site-description {
+    font-size: 1.1em;
+    margin: 0;
+}
+
+/* Main Navigation */
+.main-navigation {
+    flex-grow: 1; /* Allows it to take up available space */
+    text-align: right; /* Aligns menu items to the right */
+}
+
+.main-navigation ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    display: flex; /* Makes menu items sit next to each other */
+    justify-content: center; /* Center navigation items */
+    flex-wrap: wrap; /* Allows menu items to wrap on smaller screens */
+    background-color: #333; /* Slightly lighter dark for nav background */
+    border-radius: 5px; /* Subtle rounded corners for the nav bar */
+    margin-top: 20px; /* Space between header and nav */
+}
+
+.main-navigation li {
+    margin-left: 25px; /* Spacing between menu items */
+    position: relative; /* For dropdown menus if you add them later */
+}
+
+.main-navigation li a {
+    display: block;
+    padding: 8px 15px; /* More vertical padding for clickable area */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.15em;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    color: #eee; /* Light color for nav links */
+    border-radius: 3px;
+}
+
+.main-navigation li a:hover,
+.main-navigation li a:focus {
+    color: #fff;
+    background-color: #555; /* Darker hover state */
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   Comic Specific Styles (Minimalist)
+   ========================================================================== */
+
+/* Single Comic Page */
+article.post-type-comic {
+    margin-bottom: 2em;
+    text-align: center; /* Center comic content */
+}
+
+.comic-series-title {
+    font-size: 1.8em;
+    margin-bottom: 0.2em;
+    color: #555; /* Slightly muted color for series title */
+}
+
+.comic-issue-title {
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: #777; /* Slightly muted color for issue title */
+}
+
+.comic-page-number {
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 1em;
+    color: #888; /* Even more muted for page number */
+}
+
+.comic-image-wrapper {
+    margin-bottom: 1.5em;
+    line-height: 0; /* Remove extra space below image */
+    background-color: #fcfcfc; /* Very subtle background for comic image area */
+    border: 1px solid #eee; /* Light border around comic image */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very light shadow */
+}
+
+.comic-page-image {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Remove extra space below image */
+}
+
+.comic-image-placeholder {
+    background-color: #f8f8f8;
+    border: 1px dashed #ccc;
+    padding: 50px 20px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 1.5em;
+}
+
+/* Comic Navigation (Footer) */
+.comic-navigation {
+    display: flex;
+    justify-content: space-between; /* Spread links across the footer */
+    align-items: center;
+    padding: 15px 0;
+    border-top: 1px solid #eee; /* Separator from comic content */
+    margin-top: 2em;
+    font-size: 1.1em;
+    flex-wrap: wrap; /* Allow navigation items to wrap on smaller screens */
+    gap: 10px; /* Space between navigation items */
+}
+
+.comic-navigation span {
+    flex: 1; /* Allow spans to grow and shrink */
+    text-align: center; /* Center individual navigation links */
+}
+
+.comic-navigation .nav-first-page,
+.comic-navigation .nav-previous {
+    text-align: left; /* Align first/previous to the left */
+}
+
+.comic-navigation .nav-next,
+.comic-navigation .nav-last-page {
+    text-align: right; /* Align next/last to the right */
+}
+
+.comic-navigation a {
+    display: inline-block; /* Allow padding and sizing */
+    padding: 8px 12px;
+    background-color: #0073aa; /* Standard WordPress blue for buttons */
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevent breaking of text in button */
+}
+
+.comic-navigation a:hover {
+    background-color: #005a8d; /* Darker blue on hover */
+    text-decoration: none;
+}
+
+.comic-navigation span.disabled {
+    /* Style for disabled/placeholder navigation slots */
+    visibility: hidden; /* Hide the placeholder but keep its space */
+    padding: 8px 12px; /* Match padding of active links for consistent spacing */
+    display: inline-block; /* Ensure it takes space */
+}
+
+/* Comic Series Grid (Comic Hub) */
+.comic-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 30px; /* Space between grid items */
+    margin-top: 2em;
+}
+
+.comic-series-item {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comic-series-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.comic-issue-cover-wrapper {
+    margin-bottom: 1em;
+}
+
+.comic-issue-cover {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.comic-series-title-grid,
+.comic-issue-title-grid {
+    font-size: 1.3em;
+    margin-top: 0.5em;
+    margin-bottom: 0.2em;
+    color: #333;
+}
+
+.comic-series-description,
+.comic-issue-description {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Vertical Scroll Issue View */
+.comic-vertical-scroll-wrapper {
+    margin-top: 2em;
+    line-height: 0; /* Remove vertical gaps between images */
+}
+
+.single-comic-page-in-vertical-issue {
+    margin-bottom: 0; /* Ensure no spacing between pages */
+    line-height: 0; /* Crucial for vertical images */
+}
+
+/* ==========================================================================
+   WordPress Default Styles Overrides
+   ========================================================================== */
+
+/* Alignments */
+.alignleft {
+    display: block;
+    margin-right: 1.5em;
+    float: left;
+}
+
+.alignright {
+    display: block;
+    margin-left: 1.5em;
+    float: right;
+}
+
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Captions */
+.wp-caption {
+    max-width: 100%;
+    background-color: #f8f8f8;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 1.5em;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.wp-caption-text {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.5em;
+}
+
+/* Galleries */
+.gallery {
+    margin-bottom: 1.5em;
+}
+
+.gallery-item {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    width: 100%;
+    max-width: 25%; /* Adjust as needed for column layout */
+    padding: 1%;
+    box-sizing: border-box;
+}
+
+.gallery-columns-1 .gallery-item {
+    max-width: 100%;
+}
+.gallery-columns-2 .gallery-item {
+    max-width: 50%;
+}
+.gallery-columns-3 .gallery-item {
+    max-width: 33.33%;
+}
+/* Add more for other column counts */
+
+.gallery-caption {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 0.5em;
+}
+
+/* Comments */
+#comments {
+    margin-top: 2em;
+    padding-top: 2em;
+    border-top: 1px solid #eee;
+}
+
+.comment-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.comment-body {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 1em;
+    border-radius: 5px;
+}
+
+/* Site Footer */
+.site-footer {
+    background-color: #222; /* Dark background */
+    color: #fff; /* White text */
+    padding: 20px 0;
+    text-align: center; /* Added: Center footer content */
+    margin-top: 40px; /* Space above footer */
+    font-size: 0.9em;
+}
+
+.site-info {
+    text-align: center; /* Ensures text within also centers */
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+/* --- Media Query: max-width 768px (tablets and smaller) --- */
+@media only screen and (max-width: 768px) {
+    #primary {
+        margin: 10px auto; /* Reduce vertical margin */
+        padding: 20px; /* Reduce padding for smaller screens */
+    }
+
+    .main-navigation ul {
+        flex-direction: column; /* Stack menu items vertically */
+        align-items: center; /* Center stacked items */
+        padding: 0; /* Remove horizontal padding */
+    }
+
+    .main-navigation li {
+        margin: 5px 0; /* Adjust spacing for stacked items */
+        width: 100%; /* Make each item take full width */
+        text-align: center; /* Center text within items */
+    }
+
+    .main-navigation li a {
+        padding: 8px; /* Adjust padding */
+    }
+
+    /* Adjust comic grid for smaller screens */
+    .comic-posts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .comic-navigation {
+        flex-direction: column; /* Stack navigation buttons */
+        gap: 5px; /* Reduce gap between stacked buttons */
+        font-size: 1em;
+    }
+
+    .comic-navigation span {
+        width: 100%; /* Make each button take full width */
+        text-align: center;
+    }
+
+    .comic-navigation a {
+        width: calc(100% - 24px); /* Full width minus padding */
+        display: block; /* Ensure it takes full width */
+    }
+
+    /* Sidebar - typically hidden or collapsed on small screens */
+    #secondary {
+        display: none; /* Hide sidebar on smaller screens by default */
+    }
+
+    /* Footer adjustments for mobile */
+    .site-footer {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center stacked items for mobile */
+        padding: 15px; /* Adjust padding for smaller screens */
+        text-align: center; /* Ensure text within also centers */
+    }
+
+    .site-info {
+        text-align: center; /* Ensure text remains centered */
+        margin-top: 10px; /* Add some space above site info if needed */
+    }
+}
+
+/* --- Media Query: max-width 480px (phones) --- */
+@media only screen and (max-width: 480px) {
+    #primary {
+        padding: 15px; /* Further reduce padding */
+        margin: 10px auto; /* Keep vertical margin */
+    }
+
+    .site-title {
+        font-size: 2em; /* Smaller title on very small screens */
+    }
+
+    .site-description {
+        font-size: 1em;
+    }
+
+    /* Adjust comic grid for very small screens */
+    .comic-posts-grid {
+        grid-template-columns: 1fr; /* Single column layout for very small screens */
+        gap: 15px;
+    }
+
+    /* Title for entries on very small screens */
+    .entry-header .entry-title {
+        font-size: 1.5em;
+    }
+
+    /* Comic navigation font size for mobile */
+    .comic-navigation a {
+        font-size: 0.9em;
+    }
+}
