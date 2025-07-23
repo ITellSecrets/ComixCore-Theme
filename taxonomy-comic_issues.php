@@ -88,15 +88,18 @@ if ( $issue_display_style === 'vertical_scroll' ) {
                         while ( $all_comic_pages_query->have_posts() ) {
                             $all_comic_pages_query->the_post();
                             $comic_page_image_id = get_post_meta( get_the_ID(), '_comic_page_image_id', true );
-                            $comic_page_image_url = $comic_page_image_id ? wp_get_attachment_image_url( $comic_page_image_id, 'full' ) : '';
-                            $comic_page_image_alt = $comic_page_image_id ? get_post_meta( $comic_page_image_id, '_wp_attachment_image_alt', true ) : '';
 
-                            if ( $comic_page_image_url ) {
-                                // Add `loading="lazy"` for native browser lazy loading
-                                // Add a class for potential CSS styling to remove gaps
+                            if ( $comic_page_image_id ) {
+                                // **** THIS IS THE MODIFIED SECTION ****
                                 echo '<div class="single-comic-page-in-vertical-issue">';
-                                echo '<img src="' . esc_url($comic_page_image_url) . '" alt="' . esc_attr($comic_page_image_alt ? $comic_page_image_alt : get_the_title()) . '" class="comic-page-image" loading="lazy" />';
+                                echo wp_get_attachment_image(
+                                    $comic_page_image_id,
+                                    'comic-full', // Use your custom size for full comic pages
+                                    false,
+                                    array( 'class' => 'comic-page-image' ) // Keep your CSS class
+                                );
                                 echo '</div>';
+                                // ************************************
                             } else {
                                 // Fallback for missing image
                                 ?>

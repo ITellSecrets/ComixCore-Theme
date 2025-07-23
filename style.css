@@ -1,175 +1,84 @@
 /*
-Theme Name: Wyrd Northwest
-Theme URI: https://wyrdnorthwest.com/
-Author: Tait
+Theme Name: ComixCore
+Theme URI: https://wyrdnorthwest.com/comixcore
+Author: ITS Comics
 Author URI: [www.wyrdnorthwest.com]
-Description: A WordPress theme for the Wyrd Northwest comic.
+Description: A free open-source WordPress comic theme.
 Version: 1.0
 Requires at least: 6.0
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: wyrdnorthwest
-
-Colors:
-    red: #D92626
-    burgundy: #9B2626
-    light-yellow: #EAF378
-    medium-green: #39B109
-    dark-green: #00501E
-    very-dark-green: #001E00
-    blue: #50AECE
-    light-beige: #E0C983
-    khaki-brown: #A09164
-    black: #000000
+Text Domain: comixcore
+Tags: comics, graphic-novel, webcomic, responsive, custom-post-type
 */
 
 /* ==========================================================================
-   Theme Styles
+   Base Theme Styles (Minimalist but Sharp)
    ========================================================================== */
 
-/* --- Overall Site Layout and Background --- */
+/* Overall Site Layout and Background */
 body {
-    font-family: 'EB Garamond', serif;
-    color: #333;
+    font-family: Arial, sans-serif; /* A generic, clean sans-serif font */
+    color: #333; /* Standard dark gray for text */
     margin: 0;
     padding: 0;
-    /* Corrected: Relative path for background image - make sure WNWBackground.jpg is in your theme's 'images' folder */
-    background-image: url('images/WNWBackground.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-    font-size: 1.25em; /* Body text slightly larger */
+    background-color: #f0f2f5; /* A very light gray background for the overall site */
+    line-height: 1.6; /* Improve readability for body text */
 }
 
-/* General image reset to remove default borders/shadows, including for logo */
-img {
-    border: none;
-    box-shadow: none;
-    max-width: 100%; /* Ensures all images are responsive by default */
-    height: auto;
-}
-
-/* Ensure outer WordPress content wrappers are transparent and have no extra padding/margin */
-main#main,
-.site-content,
-.site-main,
-#content,
-.site-inner {
-    background-color: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-/* --- Content Wrapper (Your Paper Background) --- */
+/* Main Content Area Container */
 #primary {
-    /* Corrected: Relative path for background image - make sure PaperSm.jpg is in your theme's 'images' folder */
-    background-image: url('images/PaperSm.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    background-color: #F1DCAA; /* Fallback color for paper texture */
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    margin: 20px auto;
-    max-width: 1200px;
-    box-sizing: border-box;
+    max-width: 960px; /* Limit content width for better readability on large screens */
+    margin: 20px auto; /* Center the content area and add vertical spacing */
+    background-color: #ffffff; /* White background for the content box */
+    padding: 30px; /* More generous padding inside the content box */
+    border-radius: 8px; /* Slightly rounded corners for a softer look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-/* Ensure the header and footer inside the primary content box are transparent */
-.entry-header, .entry-content, .entry-footer {
-    background-color: transparent;
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #333; /* Consistent dark color for all headings */
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    line-height: 1.2; /* Tighter line-height for headings */
 }
 
-/* --- Typography --- */
+/* Links */
+a {
+    color: #0073aa; /* WordPress default blue for links */
+    text-decoration: none;
+}
 
-/* Apply Rye to headers and titles */
-h1, h2, h3, h4, h5, h6,
-.entry-title, /* Main page/post titles, like "Howdy, traveler." */
-.site-title /* Your site's main title in the header */
-{
-    font-family: 'Rye', cursive;
-    color: #1a1a1a;
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
+/* Site Header (top bar where site title/description goes) */
+.site-header {
+    background-color: #222; /* Dark, neutral header background */
+    padding: 15px 0; /* Adjusted: Slimmer header - reduced from 20px */
+    color: #fff; /* White text for contrast */
+    text-align: center; /* Center header content */
+}
+
+.site-title a,
+.site-description {
+    color: #fff; /* White color for site title and description */
+    text-decoration: none;
+}
+
+.site-title {
+    font-size: 2.5em; /* Larger site title */
+    margin: 0;
+    padding-bottom: 5px;
 }
 
 .site-description {
-    font-family: 'EB Garamond', serif;
-}
-
-/* Drop Cap for the first letter of the page title */
-.entry-header .entry-title::first-letter {
-    float: left;
-    font-size: 2em;
-    line-height: 0.8;
-    margin-top: 5px;
-    font-weight: bold;
-    color: #B71C00; /* Rust-Red color */
-}
-
-/* --- Header Styling --- */
-
-/* Overall Header - acts as a full-width container for the constrained inner header */
-.site-header {
-    width: 100%; /* Ensure it spans full width of the browser */
-    padding: 0; /* Ensure no extra padding pushing content out */
-    box-sizing: border-box;
-}
-
-/* Inner header for logo left, nav right layout - now carries the background and border */
-.site-header-inner {
-    display: flex;
-    justify-content: space-between; /* Pushes logo and nav to opposite ends */
-    align-items: center; /* Vertically centers them */
-    max-width: 1200px; /* Constrains the content and its new background/border */
-    margin: 0 auto; /* Centers the inner content */
-    padding: 15px 20px; /* Vertical padding from original .site-header, plus horizontal padding */
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-    width: 100%; /* Ensure it takes full width of its parent (.site-header) up to max-width */
-    box-sizing: border-box;
-    background-color: #001E00; /* Very dark green from your palette for a strong base */
-    /* NEW: Accent lines on bottom, left, and right */
-    border-bottom: 2px solid #AFB444;
-    border-left: 2px solid #AFB444;
-    border-right: 2px solid #AFB444;
-    /* NEW: Rounded bottom corners */
-    border-radius: 0 0 10px 10px; /* Top-left, Top-right, Bottom-right, Bottom-left */
-}
-
-/* Site Branding (Logo/Title) */
-.site-branding {
-    flex-shrink: 0; /* Prevent it from shrinking */
-    margin-right: 20px; /* Space between logo and nav on desktop */
-}
-
-/* If using custom logo (WyrdLogo.png) */
-.site-branding .custom-logo {
-    max-height: 80px; /* Adjust height as needed for your logo */
-    width: auto;
-    display: block; /* Ensures it behaves nicely for spacing */
-    border: none;
-    box-shadow: none;
-}
-
-/* If using site title instead of logo */
-.site-branding .site-title {
+    font-size: 1.1em;
     margin: 0;
-    font-size: 2.8em; /* Adjusted font size for impact */
-    line-height: 1;
-}
-
-.site-branding .site-title a {
-    color: #FFC83C; /* Bright yellow-orange for the title */
-    text-decoration: none;
-    font-family: 'Georgia', serif; /* A more "Wyrd" default font, can be replaced */
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
-}
-
-.site-branding .site-description {
-    margin: 5px 0 0;
-    font-size: 1em;
-    color: #68A0A0; /* Muted teal/blue-green for the description */
 }
 
 /* Main Navigation */
@@ -181,10 +90,13 @@ h1, h2, h3, h4, h5, h6,
 .main-navigation ul {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 10px 0;
     display: flex; /* Makes menu items sit next to each other */
-    justify-content: flex-end; /* Pushes menu items to the right */
+    justify-content: center; /* Center navigation items */
     flex-wrap: wrap; /* Allows menu items to wrap on smaller screens */
+    background-color: #333; /* Slightly lighter dark for nav background */
+    border-radius: 5px; /* Subtle rounded corners for the nav bar */
+    margin-top: 20px; /* Space between header and nav */
 }
 
 .main-navigation li {
@@ -194,506 +106,347 @@ h1, h2, h3, h4, h5, h6,
 
 .main-navigation li a {
     display: block;
-    padding: 8px 0; /* More vertical padding for clickable area */
-    color: #CB6452; /* Saturated reddish-brown/salmon for nav links */
+    padding: 8px 15px; /* More vertical padding for clickable area */
     text-decoration: none;
     font-weight: bold;
     font-size: 1.15em;
-    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover and subtle scale */
+    transition: color 0.3s ease, background-color 0.3s ease;
+    color: #eee; /* Light color for nav links */
+    border-radius: 3px;
 }
 
 .main-navigation li a:hover,
 .main-navigation li a:focus {
-    color: #B71C00; /* Strong red-orange on hover */
-    transform: translateY(-2px); /* Slightly lift on hover */
+    color: #fff;
+    background-color: #555; /* Darker hover state */
+    text-decoration: none;
 }
 
-/* --- Homepage Layouts --- */
+/* ==========================================================================
+   Comic Specific Styles (Minimalist)
+   ========================================================================== */
 
-/* Corrected: Style for the scrollable intro text column (for Columns Block) */
-.intro-text-container {
-    height: 620px; /* Adjusted height to match your logo's height (e.g., as seen in 2025-07-15.jpg) */
-    overflow-y: scroll; /* Adds a vertical scrollbar when content overflows */
-    padding-right: 15px; /* Add some internal padding to the text box */
-    padding-left: 7px; /* From a previous iteration */
-}
-
-/* Scrollbar styling for Webkit browsers (Chrome, Safari, etc.) */
-.intro-text-container::-webkit-scrollbar {
-    width: 6px;
-}
-.intro-text-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-.intro-text-container::-webkit-scrollbar-thumb {
-    background: #8b4513; /* Your earthy brown color */
-    border-radius: 3px;
-}
-
-/* Fixes spacing for paragraphs within the scrolling box */
-.intro-text-container p {
-    margin-top: 0; /* Removes the default top margin */
-    margin-bottom: 1em; /* Adds consistent spacing between paragraphs */
-    line-height: 1.6; /* Improves readability by adjusting the space between lines of text */
-}
-
-/* --- Comic & Page Content --- */
-
-/* Custom font size for the H4 header on single comic pages */
-/* This targets the H4 that contains your comic meta information */
-body.single-comic h4.comic-meta.entry-title {
-    font-size: 1.4em; /* Adjust this value (e.g., 1.2em, 1.6em) to your preference */
-    line-height: 1.3; /* Adjust line height if the text wraps */
-    text-align: center; /* Center the entire header text */
-    margin-bottom: 20px; /* Adjust spacing below the header */
-    color: #1a1a1a; /* Using the same color as your other Rye headers */
-}
-
-/* Ensure individual spans within the H4 don't inherit a too-large font-size */
-body.single-comic h4.comic-meta.entry-title span {
-    font-size: 1em; /* This ensures the text inside spans is not excessively large relative to the H4's font-size */
-    font-weight: normal; /* Override bold if H4 default is bold and you want these parts regular */
-}
-
-/* New: Style for the separator (em-dash) span */
-body.single-comic h4.comic-meta.entry-title .meta-separator {
-    margin: 0 0.25em; /* Small horizontal margin around the em-dash for even spacing */
-    color: inherit; /* Ensure it inherits the H4 color */
-    font-weight: normal; /* Ensure it's not bold */
-}
-
-/* Disable drop cap specifically for comic page headers */
-/* This targets the ::first-letter pseudo-element on single comic posts */
-body.single-comic .entry-header .entry-title::first-letter {
-    float: none; /* Remove float that causes the gap */
-    font-size: 1em; /* Reset font size to normal */
-    line-height: inherit; /* Reset line height */
-    margin-top: 0; /* Reset margin */
-    font-weight: inherit; /* Inherit font weight from the H4 */
-    color: #B71C00; /* Re-apply the Rust-Red color! */
-}
-
-/* Center the comic post content area */
+/* Single Comic Page */
 article.post-type-comic {
-    max-width: 960px; /* Or choose a width that looks good on your site */
-    margin: 20px auto;   /* This centers the block element */
-    padding: 20px;    /* Add some internal padding */
-    box-sizing: border-box; /* Ensures padding is included in the max-width */
-    background-color: transparent; /* Make sure the article doesn't have its own background */
-    box-shadow: none; /* Remove the shadow from the article */
+    margin-bottom: 2em;
+    text-align: center; /* Center comic content */
 }
 
-/* Center comic and cover images */
-.comic-image-wrapper,
-.comic-cover-wrapper {
-    text-align: center;
-    margin: 20px auto;
-    max-width: 100%;
-}
-
-/* Specific styling for comic images inside wrappers (general img rule above covers other images) */
-.comic-page-image,
-.comic-issue-cover {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Comic Page Title Styling */
 .comic-series-title {
-    font-weight: 700; /* Bold the series name */
-    color: #555;
+    font-size: 1.8em;
+    margin-bottom: 0.2em;
+    color: #555; /* Slightly muted color for series title */
 }
 
 .comic-issue-title {
-    font-weight: 600; /* Slightly less bold for issue title */
-    color: #444;
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: #777; /* Slightly muted color for issue title */
 }
 
 .comic-page-number {
-    font-weight: 400; /* Regular weight for page number */
-    color: #666;
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 1em;
+    color: #888; /* Even more muted for page number */
 }
 
-/* Comic Navigation Styling */
+.comic-image-wrapper {
+    margin-bottom: 1.5em;
+    line-height: 0; /* Remove extra space below image */
+    background-color: #fcfcfc; /* Very subtle background for comic image area */
+    border: 1px solid #eee; /* Light border around comic image */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very light shadow */
+}
+
+.comic-page-image {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Remove extra space below image */
+}
+
+.comic-image-placeholder {
+    background-color: #f8f8f8;
+    border: 1px dashed #ccc;
+    padding: 50px 20px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 1.5em;
+}
+
+/* Comic Navigation (Footer) */
 .comic-navigation {
-    display: flex; /* Use flexbox for easy alignment */
-    justify-content: space-between; /* Pushes previous to left, next to right */
+    display: flex;
+    justify-content: space-between; /* Spread links across the footer */
     align-items: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding: 10px 0;
-    border-top: 1px solid #333; /* Separator line */
-    border-bottom: 1px solid #333;
+    padding: 15px 0;
+    border-top: 1px solid #eee; /* Separator from comic content */
+    margin-top: 2em;
+    font-size: 1.1em;
+    flex-wrap: wrap; /* Allow navigation items to wrap on smaller screens */
+    gap: 10px; /* Space between navigation items */
+}
+
+.comic-navigation span {
+    flex: 1; /* Allow spans to grow and shrink */
+    text-align: center; /* Center individual navigation links */
+}
+
+.comic-navigation .nav-first-page,
+.comic-navigation .nav-previous {
+    text-align: left; /* Align first/previous to the left */
+}
+
+.comic-navigation .nav-next,
+.comic-navigation .nav-last-page {
+    text-align: right; /* Align next/last to the right */
 }
 
 .comic-navigation a {
-    text-decoration: none; /* Remove underline */
-    color: #0073aa; /* WordPress blue, or choose your own theme color */
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease; /* Smooth hover effect */
+    display: inline-block; /* Allow padding and sizing */
+    padding: 8px 12px;
+    background-color: #0073aa; /* Standard WordPress blue for buttons */
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevent breaking of text in button */
 }
 
-.comic-navigation a:hover,
-.comic-navigation a:focus {
-    background-color: #f0f0f0; /* Light background on hover */
-    color: #005177;
-}
-
-.nav-previous {
-    text-align: left;
-}
-
-.nav-next {
-    text-align: right;
-}
-
-/* --- Page Title Styling (General for all pages/posts) --- */
-.entry-header .entry-title {
-    text-align: left; /* Changes alignment from center to left */
-    font-size: 2.2em;
-    margin-bottom: 25px;
-    color: #333; /* Default text color for the rest of the title */
-}
-
-/* --- Footer Styling --- */
-
-/* Overall Footer - now acts as the constrained, styled container */
-.site-footer {
-    max-width: 1200px; /* Constrain content width to match primary/header */
-    margin: 0 auto; /* Center the footer */
-    padding: 20px 20px; /* Vertical and horizontal padding */
-    display: flex;
-    justify-content: center; /* ALIGN CONTENT TO THE CENTER */
-    align-items: center; /* Vertically align items */
-    flex-wrap: wrap; /* Allow content to wrap on smaller screens */
-    width: 100%; /* Ensure it takes full width of its parent (.site-footer) up to max-width */
-    box-sizing: border-box;
-    background-color: #001E00; /* Very dark green, matching header */
-    border-top: 2px solid #AFB444;
-    border-left: 2px solid #AFB444;
-    border-right: 2px solid #AFB444;
-    border-radius: 10px 10px 0 0; /* Top-left, Top-right, Bottom-right, Bottom-left */
-    color: #cccccc; /* Lighter text color for readability */
-    text-align: center; /* Ensure text within also centers for non-flex items */
-}
-
-.site-footer a {
-    color: #EAF378; /* Light yellow for links from your palette */
+.comic-navigation a:hover {
+    background-color: #005a8d; /* Darker blue on hover */
     text-decoration: none;
-    transition: color 0.3s ease;
 }
 
-.site-footer a:hover,
-.site-footer a:focus {
-    color: #AFB444; /* Slightly different yellow-green on hover */
+.comic-navigation span.disabled {
+    /* Style for disabled/placeholder navigation slots */
+    visibility: hidden; /* Hide the placeholder but keep its space */
+    padding: 8px 12px; /* Match padding of active links for consistent spacing */
+    display: inline-block; /* Ensure it takes space */
 }
 
-/* Specific styling for WordPress generated "Proudly powered by WordPress" if it exists */
-.site-info {
-    font-size: 0.9em; /* Slightly smaller text for this info */
-    color: #bbbbbb; /* A slightly darker light grey for contrast */
-    width: 100%; /* Ensure it takes full width within the inner container for alignment */
-    text-align: center; /* ENSURE THIS TEXT IS CENTERED */
-    margin: 0; /* Remove default margins */
-}
-
-/* Styling for Vertical Scroll Comic Issues */
-.comic-vertical-scroll-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center images horizontally */
-    width: 100%;
-    max-width: 100%; /* Ensure it doesn't overflow */
-    overflow-x: hidden; /* Prevent horizontal scroll */
-}
-
-.single-comic-page-in-vertical-issue {
-    /* Remove any default padding/margins from image containers */
-    margin: 0;
-    padding: 0;
-    line-height: 0; /* Important to remove vertical gaps between images */
-    display: block; /* Ensure div doesn't add extra space */
-    width: 100%; /* Make container take full width */
-}
-
-.single-comic-page-in-vertical-issue img.comic-page-image {
-    display: block; /* Remove extra space below image */
-    width: 100%; /* Make images fill their container */
-    height: auto; /* Maintain aspect ratio */
-    margin: 0;
-    padding: 0;
-}
-
-/* Styles for the Comic Hub Page (page-comic-hub.php) */
-
-.comic-series-grid {
+/* Comic Series Grid (Comic Hub) */
+.comic-posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust minmax(250px, 1fr) for desired logo size */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
     gap: 30px; /* Space between grid items */
-    justify-content: center;
-    align-items: start;
-    padding: 20px;
+    margin-top: 2em;
 }
 
 .comic-series-item {
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.05); /* Slightly transparent background for each item */
-    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #eee;
     border-radius: 8px;
-    border: 2px solid #A09164; /* Outer border for the box, using khaki-brown */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Outer box shadow */
-    display: flex; /* Use flexbox to vertically align content */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Ensure the entire series item is clickable for the link */
-.comic-series-item a {
-    text-decoration: none;
-    color: inherit; /* Inherit color from parent for text within the link */
-    display: flex; /* Use flexbox for link content (logo + text) */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%; /* Ensure link covers the whole item for clickability */
-}
-
-
-.comic-series-item img.series-logo {
-    max-width: 100%; /* Ensure image doesn't overflow its container */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Remove extra space below image */
-    margin: 0 auto 10px auto; /* Center image and add space below it */
-    /* This is the key change for shape-conforming shadow: */
-    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.5)); /* Shadow conforms to logo shape */
-    transition: filter 0.3s ease-in-out; /* Smooth transition for shadow */
-}
-
-.comic-series-item h2 {
-    font-size: 1.5em; /* Adjust as needed */
-    color: #00501E;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Subtle shadow for readability */
-}
-
-.comic-series-item h2.series-title-under-logo {
-    font-size: 1.2em; /* Slightly smaller for titles under the logo */
-}
-
-/* Optional: Add hover effect */
-.comic-series-item a:hover .series-logo {
-    transform: translateY(-5px); /* Lift effect on hover */
-    filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.6)); /* Stronger drop-shadow on hover */
-    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
-}
-
-.comic-series-item a:hover h2 {
-    color: #EAF378;
-    transition: color 0.3s ease-in-out;
-}
-
-/* Styles for the Series Archive Page (taxonomy-comic_series.php) */
-
-.series-archive-logo {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.series-archive-logo img {
-    max-width: 300px; /* Adjust max width for the main series logo */
-    height: auto;
-    filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 0.5)); /* Apply drop-shadow for transparent logos */
-    margin: 0 auto;
-    display: block;
-}
-
-.page-header .page-title {
-    font-size: 3em; /* Larger title for the series name */
-    text-align: center;
-    color: #00501E; /* Dark green for the main series title */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-.taxonomy-description {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 40px auto;
-    font-size: 1.1em;
-    line-height: 1.6;
-    color: #333; /* Regular body text color for description */
-}
-
-/* Grid for Issue Covers */
-.comic-issues-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust minmax(200px, 1fr) for desired cover size */
-    gap: 25px; /* Space between issue covers */
-    justify-content: center;
-    align-items: start;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     padding: 20px;
-    max-width: 1200px; /* Limit the overall width of the issues grid */
-    margin: 0 auto; /* Center the grid on the page */
-}
-
-.comic-issue-item {
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.05); /* Slightly transparent background for each item */
-    padding: 15px 15px 10px 15px;
-    border-radius: 8px;
-    border: 2px solid #A09164; /* Outer border for the issue box */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Space out content nicely */
-    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.comic-issue-item a {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
+.comic-series-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-.comic-issue-item img.issue-cover-image {
+.comic-issue-cover-wrapper {
+    margin-bottom: 1em;
+}
+
+.comic-issue-cover {
     max-width: 100%;
     height: auto;
-    display: block;
-    margin: 0 auto 10px auto;
-    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.5)); /* Shadow conforms to cover shape */
-    transition: filter 0.3s ease-in-out;
+    border-radius: 5px;
 }
 
-.comic-issue-item .issue-cover-placeholder {
-    width: 100%;
-    padding-top: 150%; /* Aspect ratio for placeholder */
-    background-color: #333;
-    color: #eee;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
-    margin-bottom: 10px;
+.comic-series-title-grid,
+.comic-issue-title-grid {
+    font-size: 1.3em;
+    margin-top: 0.5em;
+    margin-bottom: 0.2em;
+    color: #333;
 }
-.comic-issue-item .issue-cover-placeholder h3 {
-    font-size: 1.2em;
-    margin: 0;
-}
-.comic-issue-item .issue-cover-placeholder p {
+
+.comic-series-description,
+.comic-issue-description {
     font-size: 0.9em;
-    margin: 5px 0 0 0;
+    color: #666;
 }
 
-.comic-issue-item h3.issue-title-under-cover {
-    font-size: 1.2em;
-    color: #00501E; /* Dark green for issue titles */
-    margin-top: 5px;
-    margin-bottom: 0;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    display: flex; /* Use flex to align text within its container */
+/* Vertical Scroll Issue View */
+.comic-vertical-scroll-wrapper {
+    margin-top: 2em;
+    line-height: 0; /* Remove vertical gaps between images */
 }
 
-/* Hover effects for issue items */
-.comic-issue-item a:hover .issue-cover-image {
-    transform: translateY(-5px);
-    filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.6));
-    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+.single-comic-page-in-vertical-issue {
+    margin-bottom: 0; /* Ensure no spacing between pages */
+    line-height: 0; /* Crucial for vertical images */
 }
 
-.comic-issue-item a:hover h3 {
-    color: #EAF378; /* Light yellow on hover for issue title */
-    transition: color 0.3s ease-in-out;
-}
+/* ==========================================================================
+   WordPress Default Styles Overrides
+   ========================================================================== */
 
-/* Styling for Comic Series Logo on Taxonomy Archive Page */
-.series-logo {
-    max-width: 250px; /* Adjust this value to your desired maximum width */
-    height: auto; /* This maintains the aspect ratio of the image */
-    display: block; /* Ensures it behaves like a block element, useful for centering */
-    margin: 0 auto 20px auto; /* Centers the image and adds some bottom margin */
-}
-
-/* You might also want to adjust the spacing around the issue grid */
-.comic-issues-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust minmax(200px, 1fr) for issue item width */
-    gap: 30px; /* Spacing between issue items */
-    margin-top: 40px;
-}
-
-.comic-issue-item {
-    text-align: center;
-}
-
-.issue-cover {
-    max-width: 100%; /* Ensures covers don't overflow their container */
-    height: auto;
+/* Alignments */
+.alignleft {
     display: block;
-    margin: 0 auto 10px auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
+    margin-right: 1.5em;
+    float: left;
 }
 
-/* --- Mobile Responsiveness Adjustments --- */
-/* --- Media Query: max-width 768px (tablets and small screens) --- */
+.alignright {
+    display: block;
+    margin-left: 1.5em;
+    float: right;
+}
+
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Captions */
+.wp-caption {
+    max-width: 100%;
+    background-color: #f8f8f8;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 1.5em;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.wp-caption-text {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.5em;
+}
+
+/* Galleries */
+.gallery {
+    margin-bottom: 1.5em;
+}
+
+.gallery-item {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    width: 100%;
+    max-width: 25%; /* Adjust as needed for column layout */
+    padding: 1%;
+    box-sizing: border-box;
+}
+
+.gallery-columns-1 .gallery-item {
+    max-width: 100%;
+}
+.gallery-columns-2 .gallery-item {
+    max-width: 50%;
+}
+.gallery-columns-3 .gallery-item {
+    max-width: 33.33%;
+}
+/* Add more for other column counts */
+
+.gallery-caption {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 0.5em;
+}
+
+/* Comments */
+#comments {
+    margin-top: 2em;
+    padding-top: 2em;
+    border-top: 1px solid #eee;
+}
+
+.comment-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.comment-body {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 1em;
+    border-radius: 5px;
+}
+
+/* Site Footer */
+.site-footer {
+    background-color: #222; /* Dark background */
+    color: #fff; /* White text */
+    padding: 20px 0;
+    text-align: center; /* Added: Center footer content */
+    margin-top: 40px; /* Space above footer */
+    font-size: 0.9em;
+}
+
+.site-info {
+    text-align: center; /* Ensures text within also centers */
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+/* --- Media Query: max-width 768px (tablets and smaller) --- */
 @media only screen and (max-width: 768px) {
-    /* #primary box */
     #primary {
-        padding: 20px;
-        margin: 10px auto;
+        margin: 10px auto; /* Reduce vertical margin */
+        padding: 20px; /* Reduce padding for smaller screens */
     }
 
-    /* Title */
-    .entry-header .entry-title {
-        font-size: 1.8em;
+    .main-navigation ul {
+        flex-direction: column; /* Stack menu items vertically */
+        align-items: center; /* Center stacked items */
+        padding: 0; /* Remove horizontal padding */
     }
 
-    .entry-header .entry-title::first-letter {
-        font-size: 2.5em;
-        line-height: 1;
-        margin-right: 4px;
+    .main-navigation li {
+        margin: 5px 0; /* Adjust spacing for stacked items */
+        width: 100%; /* Make each item take full width */
+        text-align: center; /* Center text within items */
     }
 
-    /* Body text */
-    body {
-        font-size: 0.9em;
+    .main-navigation li a {
+        padding: 8px; /* Adjust padding */
     }
 
-    /* Comic images */
-    .comic-image-wrapper,
-    .comic-cover-wrapper {
-        width: 100%;
-        height: auto;
+    /* Adjust comic grid for smaller screens */
+    .comic-posts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
     }
 
-    /* Comic navigation */
+    .comic-navigation {
+        flex-direction: column; /* Stack navigation buttons */
+        gap: 5px; /* Reduce gap between stacked buttons */
+        font-size: 1em;
+    }
+
+    .comic-navigation span {
+        width: 100%; /* Make each button take full width */
+        text-align: center;
+    }
+
     .comic-navigation a {
-        font-size: 0.9em;
-        padding: 5px 8px;
+        width: calc(100% - 24px); /* Full width minus padding */
+        display: block; /* Ensure it takes full width */
     }
 
-    /* Sidebar */
+    /* Sidebar - typically hidden or collapsed on small screens */
     #secondary {
-        display: none;
+        display: none; /* Hide sidebar on smaller screens by default */
     }
 
     /* Footer adjustments for mobile */
-    .site-footer { /* Apply to the main footer element */
+    .site-footer {
         flex-direction: column; /* Stack items vertically */
         align-items: center; /* Center stacked items for mobile */
         padding: 15px; /* Adjust padding for smaller screens */
@@ -708,45 +461,32 @@ article.post-type-comic {
 
 /* --- Media Query: max-width 480px (phones) --- */
 @media only screen and (max-width: 480px) {
-    /* #primary box */
     #primary {
-        padding: 15px;
-        border-radius: 5px;
-        margin: 5px auto;
+        padding: 15px; /* Further reduce padding */
+        margin: 10px auto; /* Keep vertical margin */
     }
 
-    /* Title */
+    .site-title {
+        font-size: 2em; /* Smaller title on very small screens */
+    }
+
+    .site-description {
+        font-size: 1em;
+    }
+
+    /* Adjust comic grid for very small screens */
+    .comic-posts-grid {
+        grid-template-columns: 1fr; /* Single column layout for very small screens */
+        gap: 15px;
+    }
+
+    /* Title for entries on very small screens */
     .entry-header .entry-title {
         font-size: 1.5em;
     }
 
-    .entry-header .entry-title::first-letter {
-        font-size: 2em;
-        line-height: 1;
-        margin-right: 3px;
-    }
-
-    /* Comic navigation stack */
-    .comic-navigation {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px 0;
-    }
-
-    .comic-navigation span {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .comic-navigation span:last-child {
-        margin-bottom: 0;
-    }
-
+    /* Comic navigation font size for mobile */
     .comic-navigation a {
-        display: block;
-        width: 100%;
-        font-size: 0.95em;
-        padding: 8px 0;
+        font-size: 0.9em;
     }
 }

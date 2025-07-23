@@ -83,28 +83,18 @@ get_header(); ?>
                         the_content(); // This will output the WordPress editor content (your gallery/images)
                         echo '</div>';
                     } else {
-                        // If not 'vertical' mode, display the single comic page image from native custom field
-                        $image_displayed = false;
 
-                        // Get image URL from ID
-                        $comic_page_image_url = $comic_page_image_id ? wp_get_attachment_image_url( $comic_page_image_id, 'full' ) : '';
-                        $comic_page_image_alt = $comic_page_image_id ? get_post_meta( $comic_page_image_id, '_wp_attachment_image_alt', true ) : '';
-
-                        // Always try to display the comic page image (covers will also use this now)
-                        if ( $comic_page_image_url ) {
+                        if ( $comic_page_image_id ) {
                             echo '<div class="comic-image-wrapper">';
-                            echo '<img src="' . esc_url($comic_page_image_url) . '" alt="' . esc_attr($comic_page_image_alt ? $comic_page_image_alt : get_the_title()) . '" class="comic-page-image" />';
+                            // Use wp_get_attachment_image() with your custom 'comic-full' size
+                            // This will automatically add srcset, sizes, and loading="lazy"
+                            echo wp_get_attachment_image(
+                                $comic_page_image_id,
+                                'comic-full', // Use your custom size defined in functions.php
+                                false,        // Not an icon
+                                array( 'class' => 'comic-page-image' ) // Add your CSS class
+                            );
                             echo '</div>';
-                            $image_displayed = true;
-                        }
-
-                        // Optional: Fallback if no image was displayed at all for single-page mode
-                        if (!$image_displayed) {
-                            ?>
-                            <div class="comic-image-placeholder">
-                                <p>Image missing for <?php the_title(); ?>!</p>
-                            </div>
-                            <?php
                         }
 
                         // IMPORTANT: If you want any text/content placed in the main WordPress editor
@@ -128,14 +118,14 @@ get_header(); ?>
                     $next_post_link = '';
 
                     if ( $current_comic_issue_id ) {
-                        // Get all comic pages for the current issue, ordered by _comic_page_number
+                        // Get all comic pages for the current issue, ordered by menu_order
                         // We fetch only IDs for efficiency
                         $all_comic_pages_in_issue_ids = get_posts( array(
                             'post_type'      => 'comic',
                             'posts_per_page' => -1, // Get all posts
-                            'meta_key'       => '_comic_page_number', // Order by this custom field
-                            'orderby'        => 'meta_value_num',     // Treat the meta value as a number for sorting
-                            'order'          => 'ASC',
+
+                            'orderby'        => 'menu_order', // Order by the built-in menu_order
+                            'order'          => 'ASC',        // Keep this as ascending for natural sequence (1, 2, 3...)
                             'tax_query'      => array(
                                 array(
                                     'taxonomy' => 'comic_issues',

@@ -29,17 +29,18 @@ get_header(); ?>
 
                         // Get the series logo ID
                         $series_logo_id = get_term_meta( $current_series->term_id, 'series_logo_id', true );
-                        // Get the image URL from the attachment ID
-                        $series_logo_url = $series_logo_id ? wp_get_attachment_image_url( $series_logo_id, 'full' ) : ''; // 'full' for original size
-                        // Get the image alt text from the attachment ID, or create a default
-                        $series_logo_alt = $series_logo_id ? get_post_meta( $series_logo_id, '_wp_attachment_image_alt', true ) : '';
-                        if ( empty( $series_logo_alt ) ) {
-                            $series_logo_alt = $current_series->name . ' Logo';
+                        // **** MODIFIED SECTION FOR SERIES LOGO ****
+                        if ( $series_logo_id ) {
+                            echo '<div class="series-logo-container">';
+                            echo wp_get_attachment_image(
+                                $series_logo_id,
+                                'series-logo', // Use your custom 'series-logo' size
+                                false,
+                                array( 'alt' => $current_series->name . ' Logo', 'class' => 'series-logo' )
+                            );
+                            echo '</div>';
                         }
-
-                        if ( $series_logo_url ) {
-                            echo '<div class="series-logo-container"><img src="' . esc_url( $series_logo_url ) . '" alt="' . esc_attr( $series_logo_alt ) . '" class="series-logo"></div>';
-                        }
+                        // ****************************************
 
                     } else {
                         // Fallback if get_queried_object fails for some reason
@@ -89,22 +90,23 @@ get_header(); ?>
                     foreach ( $issue_terms as $issue ) :
                         // Get the issue cover ID
                         $issue_cover_id = get_term_meta( $issue->term_id, 'issue_cover_id', true );
-                        // Get the issue cover URL (using 'medium' size for display in grid)
-                        $issue_cover_url = $issue_cover_id ? wp_get_attachment_image_url( $issue_cover_id, 'medium' ) : '';
-                        // Set alt text for accessibility
-                        $issue_cover_alt = $issue_cover_id ? get_post_meta( $issue_cover_id, '_wp_attachment_image_alt', true ) : '';
-                        if ( empty( $issue_cover_alt ) ) {
-                            $issue_cover_alt = $issue->name . ' Cover';
-                        }
-
                         $issue_link = get_term_link( $issue );
                         if ( ! is_wp_error( $issue_link ) ) :
                             ?>
                             <div class="comic-issue-item">
                                 <a href="<?php echo esc_url( $issue_link ); ?>">
-                                    <?php if ( $issue_cover_url ) : ?>
-                                        <img src="<?php echo esc_url( $issue_cover_url ); ?>" alt="<?php echo esc_attr( $issue_cover_alt ); ?>" class="issue-cover">
-                                    <?php endif; ?>
+                                    <?php
+                                    // **** MODIFIED SECTION FOR ISSUE COVERS ****
+                                    if ( $issue_cover_id ) :
+                                        echo wp_get_attachment_image(
+                                            $issue_cover_id,
+                                            'issue-cover', // Use your custom 'issue-cover' size
+                                            false,
+                                            array( 'alt' => $issue->name . ' Cover', 'class' => 'issue-cover' )
+                                        );
+                                    endif;
+                                    // ****************************************
+                                    ?>
                                     <h3><?php echo esc_html( $issue->name ); ?></h3>
                                 </a>
                             </div>

@@ -83,6 +83,23 @@ endif;
 add_action( 'after_setup_theme', 'comixcore_setup' );
 
 /**
+ * Register custom image sizes for ComixCore Theme.
+ */
+function comixcore_setup_image_sizes() {
+    // For comic pages, you might want a specific width or a full-width version that is optimized.
+    // Example: A "comic-full" size that's 1200px wide, cropped if necessary.
+    add_image_size( 'comic-full', 1200, 9999, false ); // 1200px wide, proportional height
+    add_image_size( 'comic-medium', 800, 9999, false ); // 800px wide, proportional height
+
+    // For series logos, maybe a smaller, cropped size
+    add_image_size( 'series-logo', 300, 300, true ); // 300x300 hard crop
+
+    // For issue covers, perhaps a different portrait size
+    add_image_size( 'issue-cover', 600, 800, true ); // 600x800 hard crop
+}
+add_action( 'after_setup_theme', 'comixcore_setup_image_sizes' );
+
+/**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
  * @global int $content_width
@@ -178,10 +195,6 @@ function comixcore_register_comic_post_type() {
         'search_items'          => __( 'Search Comic', 'comixcore' ),
         'not_found'             => __( 'Not found', 'comixcore' ),
         'not_found_in_trash'    => __( 'Not found in Trash', 'comixcore' ),
-        'featured_image'        => __( 'Comic Page Image', 'comixcore' ),
-        'set_featured_image'    => __( 'Set comic page image', 'comixcore' ),
-        'remove_featured_image' => __( 'Remove comic page image', 'comixcore' ),
-        'use_featured_image'    => __( 'Use as comic page image', 'comixcore' ),
         'insert_into_item'      => __( 'Insert into comic', 'comixcore' ),
         'uploaded_to_this_item' => __( 'Uploaded to this comic', 'comixcore' ),
         'items_list'            => __( 'Comics list', 'comixcore' ),
@@ -319,8 +332,6 @@ function comixcore_comic_meta_box_callback( $post ) {
     $comic_page_image_id = get_post_meta( $post->ID, '_comic_page_image_id', true );
     $comic_page_number = get_post_meta( $post->ID, '_comic_page_number', true );
     $comic_display_style = get_post_meta( $post->ID, '_comic_display_style', true );
-    $next_comic_page_id = get_post_meta( $post->ID, '_next_comic_page_id', true );
-    $previous_comic_page_id = get_post_meta( $post->ID, '_previous_comic_page_id', true );
 
     // Default display style if not set
     if ( empty( $comic_display_style ) ) {
@@ -354,17 +365,6 @@ function comixcore_comic_meta_box_callback( $post ) {
         </select>
     </p>
 
-    <p>
-        <label for="next_comic_page_id"><?php _e( 'Next Comic Page ID (Optional):', 'comixcore' ); ?></label><br>
-        <input type="number" id="next_comic_page_id" name="_next_comic_page_id" value="<?php echo esc_attr( $next_comic_page_id ); ?>">
-        <p class="description">Enter the ID of the next comic page. Leave blank to automatically find based on menu order within the same issue.</p>
-    </p>
-
-    <p>
-        <label for="previous_comic_page_id"><?php _e( 'Previous Comic Page ID (Optional):', 'comixcore' ); ?></label><br>
-        <input type="number" id="previous_comic_page_id" name="_previous_comic_page_id" value="<?php echo esc_attr( $previous_comic_page_id ); ?>">
-        <p class="description">Enter the ID of the previous comic page. Leave blank to automatically find based on menu order within the same issue.</p>
-    </p>
     <?php
 }
 
@@ -405,17 +405,6 @@ function comixcore_save_comic_meta_box_data( $post_id ) {
         update_post_meta( $post_id, '_comic_display_style', sanitize_text_field( $_POST['_comic_display_style'] ) );
     }
 
-    if ( isset( $_POST['_next_comic_page_id'] ) ) {
-        update_post_meta( $post_id, '_next_comic_page_id', absint( $_POST['_next_comic_page_id'] ) );
-    } else {
-        delete_post_meta( $post_id, '_next_comic_page_id' ); // Allow unsetting if desired
-    }
-
-    if ( isset( $_POST['_previous_comic_page_id'] ) ) {
-        update_post_meta( $post_id, '_previous_comic_page_id', absint( $_POST['_previous_comic_page_id'] ) );
-    } else {
-        delete_post_meta( $post_id, '_previous_comic_page_id' ); // Allow unsetting if desired
-    }
 }
 add_action( 'save_post', 'comixcore_save_comic_meta_box_data' );
 
@@ -539,7 +528,7 @@ add_action( 'edit_comic_issues', 'ComixCore_save_comic_issue_cover_field' );
  */
 
 // 4. Enqueue WordPress media uploader and custom JS for admin screens
-function wyrd_northwest_admin_enqueue_scripts() {
+function comixcore_admin_enqueue_scripts() { // Renamed function
     // Determine if we are on a relevant admin screen for our custom media uploader
     $screen = get_current_screen();
 
@@ -554,11 +543,10 @@ function wyrd_northwest_admin_enqueue_scripts() {
         // Enqueue WordPress media uploader scripts
         wp_enqueue_media();
         // Enqueue custom JS from js/media-uploader.js
-        wp_enqueue_script( 'wyrd-northwest-media-uploader', get_template_directory_uri() . '/js/media-uploader.js', array( 'jquery' ), null, true );
+        wp_enqueue_script( 'comixcore-media-uploader', get_template_directory_uri() . '/js/media-uploader.js', array( 'jquery' ), null, true ); // Renamed script handle
     }
 }
-add_action( 'admin_enqueue_scripts', 'wyrd_northwest_admin_enqueue_scripts' );
-
+add_action( 'admin_enqueue_scripts', 'comixcore_admin_enqueue_scripts' ); // Renamed hook
 /**
  * ----------------------------------------------------------------------------------------------------
  * Pre-get posts to ensure comic archive pages only show relevant posts

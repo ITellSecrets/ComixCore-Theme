@@ -28,19 +28,8 @@ get_header(); // Loads the header.php template
 
             if ( ! empty( $series_terms ) && ! is_wp_error( $series_terms ) ) :
                 foreach ( $series_terms as $series ) :
-                    // --- START MODIFIED SECTION ---
                     // Get the series logo ID using get_term_meta()
                     $series_logo_id = get_term_meta( $series->term_id, 'series_logo_id', true );
-                    // Get the image URL from the attachment ID
-                    $series_logo_url = $series_logo_id ? wp_get_attachment_image_url( $series_logo_id, 'full' ) : ''; // 'full' for original size
-                    // Get the image alt text from the attachment ID
-                    $series_logo_alt = $series_logo_id ? get_post_meta( $series_logo_id, '_wp_attachment_image_alt', true ) : '';
-
-                    // Fallback for alt text if not set
-                    if ( empty( $series_logo_alt ) ) {
-                        $series_logo_alt = $series->name . ' Logo';
-                    }
-                    // --- END MODIFIED SECTION ---
 
                     // Get the permalink for the series archive page
                     $series_link = get_term_link( $series );
@@ -49,12 +38,26 @@ get_header(); // Loads the header.php template
                         ?>
                         <div class="comic-series-item">
                                 <a href="<?php echo esc_url( $series_link ); ?>">
-                                    <?php if ( $series_logo_url ) : // Check if a logo URL exists ?>
-                                        <img src="<?php echo esc_url( $series_logo_url ); ?>" alt="<?php echo esc_attr( $series_logo_alt ); ?>" class="series-logo">
+                                    <?php
+                                    // **** MODIFIED SECTION FOR SERIES LOGO ****
+                                    if ( $series_logo_id ) : // Check if a logo ID exists
+                                        // Use wp_get_attachment_image() with your custom 'series-logo' size
+                                        echo wp_get_attachment_image(
+                                            $series_logo_id,
+                                            'series-logo', // Use your custom 'series-logo' size defined in functions.php
+                                            false,
+                                            array(
+                                                'alt' => $series->name . ' Logo', // Set alt text for accessibility
+                                                'class' => 'series-logo' // Your CSS class
+                                            )
+                                        );
+                                        ?>
                                         <h2 class="series-title-under-logo"><?php echo esc_html( $series->name ); ?></h2>
                                     <?php else : // Fallback if no logo is set ?>
                                         <h2><?php echo esc_html( $series->name ); ?></h2>
-                                    <?php endif; ?>
+                                    <?php endif;
+                                    // ****************************************
+                                    ?>
                                 </a>
                             </div><?php
                     endif;
