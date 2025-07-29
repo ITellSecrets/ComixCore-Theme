@@ -17,13 +17,19 @@ Tags: comics, graphic-novel, webcomic, responsive, custom-post-type
    Base Theme Styles (Minimalist but Sharp)
    ========================================================================== */
 
+/* Custom rule to center the ComixCore site logo */
+.site-header .custom-logo { /* This targets the actual logo image */
+    display: block; /* Ensure it's a block element */
+    margin: 0 auto; /* This will center the block element horizontally */
+}
+
 /* Overall Site Layout and Background */
 body {
     font-family: Arial, sans-serif; /* A generic, clean sans-serif font */
-    color: #333; /* Standard dark gray for text */
+    color: var(--comixcore-body-text-color); /* Standard dark gray for text, now customizable */
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5; /* A very light gray background for the overall site */
+    background-color: var(--comixcore-site-background-color); /* Now uses the customizer variable */
     line-height: 1.6; /* Improve readability for body text */
 }
 
@@ -31,7 +37,7 @@ body {
 #primary {
     max-width: 960px; /* Limit content width for better readability on large screens */
     margin: 20px auto; /* Center the content area and add vertical spacing */
-    background-color: #ffffff; /* White background for the content box */
+    background-color: var(--comixcore-content-background-color); /* White background for the content box, now customizable */
     padding: 30px; /* More generous padding inside the content box */
     border-radius: 8px; /* Slightly rounded corners for a softer look */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
@@ -39,7 +45,7 @@ body {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-    color: #333; /* Consistent dark color for all headings */
+    color: var(--comixcore-heading-text-color); /* Consistent dark color for all headings, now customizable */
     margin-top: 1em;
     margin-bottom: 0.5em;
     line-height: 1.2; /* Tighter line-height for headings */
@@ -47,7 +53,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Links */
 a {
-    color: #0073aa; /* WordPress default blue for links */
+    color: var(--comixcore-primary-color); /* WordPress default blue for links, now customizable */
     text-decoration: none;
 }
 
@@ -58,15 +64,15 @@ a:focus {
 
 /* Site Header (top bar where site title/description goes) */
 .site-header {
-    background-color: #222; /* Dark, neutral header background */
+    background-color: var(--comixcore-header-background-color); /* Dark, neutral header background, now customizable */
     padding: 15px 0; /* Adjusted: Slimmer header - reduced from 20px */
-    color: #fff; /* White text for contrast */
+    color: var(--comixcore-header-text-color); /* White text for contrast, now customizable */
     text-align: center; /* Center header content */
 }
 
 .site-title a,
 .site-description {
-    color: #fff; /* White color for site title and description */
+    color: var(--comixcore-header-text-color); /* White color for site title and description, now customizable */
     text-decoration: none;
 }
 
@@ -94,7 +100,7 @@ a:focus {
     display: flex; /* Makes menu items sit next to each other */
     justify-content: center; /* Center navigation items */
     flex-wrap: wrap; /* Allows menu items to wrap on smaller screens */
-    background-color: #333; /* Slightly lighter dark for nav background */
+    background-color: var(--comixcore-nav-background-color); /* Slightly lighter dark for nav background, now customizable */
     border-radius: 5px; /* Subtle rounded corners for the nav bar */
     margin-top: 20px; /* Space between header and nav */
 }
@@ -111,14 +117,14 @@ a:focus {
     font-weight: bold;
     font-size: 1.15em;
     transition: color 0.3s ease, background-color 0.3s ease;
-    color: #eee; /* Light color for nav links */
+    color: var(--comixcore-nav-link-color); /* Light color for nav links, now customizable */
     border-radius: 3px;
 }
 
 .main-navigation li a:hover,
 .main-navigation li a:focus {
-    color: #fff;
-    background-color: #555; /* Darker hover state */
+    color: var(--comixcore-nav-link-hover-color); /* Now customizable */
+    background-color: var(--comixcore-nav-link-hover-bg-color); /* Darker hover state, now customizable */
     text-decoration: none;
 }
 
@@ -135,28 +141,28 @@ article.post-type-comic {
 .comic-series-title {
     font-size: 1.8em;
     margin-bottom: 0.2em;
-    color: #555; /* Slightly muted color for series title */
+    color: var(--comixcore-heading-text-color); /* Using heading color for consistency */
 }
 
 .comic-issue-title {
     font-size: 1.4em;
     margin-top: 0;
     margin-bottom: 0.5em;
-    color: #777; /* Slightly muted color for issue title */
+    color: var(--comixcore-body-text-color); /* Using body text color for consistency */
 }
 
 .comic-page-number {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 1em;
-    color: #888; /* Even more muted for page number */
+    color: var(--comixcore-body-text-color); /* Using body text color for consistency */
 }
 
 .comic-image-wrapper {
     margin-bottom: 1.5em;
     line-height: 0; /* Remove extra space below image */
-    background-color: #fcfcfc; /* Very subtle background for comic image area */
-    border: 1px solid #eee; /* Light border around comic image */
+    background-color: var(--comixcore-content-background-color); /* Using content background for consistency */
+    border: 1px solid var(--comixcore-site-background-color); /* Light border around comic image, using site background */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very light shadow */
 }
 
@@ -167,11 +173,11 @@ article.post-type-comic {
 }
 
 .comic-image-placeholder {
-    background-color: #f8f8f8;
-    border: 1px dashed #ccc;
+    background-color: var(--comixcore-content-background-color); /* Using content background for consistency */
+    border: 1px dashed #ccc; /* Original hardcoded color */
     padding: 50px 20px;
     text-align: center;
-    color: #888;
+    color: var(--comixcore-body-text-color); /* Using body text color */
     font-style: italic;
     margin-bottom: 1.5em;
 }
@@ -182,7 +188,7 @@ article.post-type-comic {
     justify-content: space-between; /* Spread links across the footer */
     align-items: center;
     padding: 15px 0;
-    border-top: 1px solid #eee; /* Separator from comic content */
+    border-top: 1px solid var(--comixcore-site-background-color); /* Separator from comic content, using site background */
     margin-top: 2em;
     font-size: 1.1em;
     flex-wrap: wrap; /* Allow navigation items to wrap on smaller screens */
@@ -207,15 +213,15 @@ article.post-type-comic {
 .comic-navigation a {
     display: inline-block; /* Allow padding and sizing */
     padding: 8px 12px;
-    background-color: #0073aa; /* Standard WordPress blue for buttons */
-    color: #fff;
+    background-color: var(--comixcore-primary-color); /* Standard WordPress blue for buttons, now customizable */
+    color: var(--comixcore-header-text-color); /* White text for contrast, using header text color */
     border-radius: 5px;
     transition: background-color 0.3s ease;
     white-space: nowrap; /* Prevent breaking of text in button */
 }
 
 .comic-navigation a:hover {
-    background-color: #005a8d; /* Darker blue on hover */
+    background-color: var(--comixcore-primary-hover-color); /* Darker blue on hover, now customizable */
     text-decoration: none;
 }
 
@@ -235,8 +241,8 @@ article.post-type-comic {
 }
 
 .comic-series-item {
-    background-color: #fff;
-    border: 1px solid #eee;
+    background-color: var(--comixcore-content-background-color); /* Using content background */
+    border: 1px solid var(--comixcore-site-background-color); /* Using site background */
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     padding: 20px;
@@ -264,13 +270,13 @@ article.post-type-comic {
     font-size: 1.3em;
     margin-top: 0.5em;
     margin-bottom: 0.2em;
-    color: #333;
+    color: var(--comixcore-heading-text-color); /* Using heading color */
 }
 
 .comic-series-description,
 .comic-issue-description {
     font-size: 0.9em;
-    color: #666;
+    color: var(--comixcore-body-text-color); /* Using body text color */
 }
 
 /* Vertical Scroll Issue View */
@@ -310,8 +316,8 @@ article.post-type-comic {
 /* Captions */
 .wp-caption {
     max-width: 100%;
-    background-color: #f8f8f8;
-    border: 1px solid #eee;
+    background-color: var(--comixcore-content-background-color); /* Using content background */
+    border: 1px solid #eee; /* Original hardcoded color */
     padding: 10px;
     margin-bottom: 1.5em;
     text-align: center;
@@ -320,7 +326,7 @@ article.post-type-comic {
 
 .wp-caption-text {
     font-size: 0.9em;
-    color: #666;
+    color: var(--comixcore-body-text-color); /* Using body text color */
     margin-top: 0.5em;
 }
 
@@ -352,7 +358,7 @@ article.post-type-comic {
 
 .gallery-caption {
     font-size: 0.8em;
-    color: #888;
+    color: var(--comixcore-body-text-color); /* Using body text color */
     margin-top: 0.5em;
 }
 
@@ -360,7 +366,7 @@ article.post-type-comic {
 #comments {
     margin-top: 2em;
     padding-top: 2em;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--comixcore-site-background-color); /* Using site background */
 }
 
 .comment-list {
@@ -370,8 +376,8 @@ article.post-type-comic {
 }
 
 .comment-body {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
+    background-color: var(--comixcore-content-background-color); /* Using content background */
+    border: 1px solid var(--comixcore-site-background-color); /* Using site background */
     padding: 15px;
     margin-bottom: 1em;
     border-radius: 5px;
@@ -379,8 +385,8 @@ article.post-type-comic {
 
 /* Site Footer */
 .site-footer {
-    background-color: #222; /* Dark background */
-    color: #fff; /* White text */
+    background-color: var(--comixcore-footer-background-color); /* Dark background, now customizable */
+    color: var(--comixcore-footer-text-color); /* White text, now customizable */
     padding: 20px 0;
     text-align: center; /* Added: Center footer content */
     margin-top: 40px; /* Space above footer */

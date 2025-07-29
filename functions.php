@@ -58,25 +58,37 @@ if ( ! function_exists( 'comixcore_setup' ) ) :
             'caption',
         ) );
 
-        // Set up the WordPress core custom background feature.
-        add_theme_support( 'custom-background', apply_filters( 'comixcore_custom_background_args', array(
-            'default-color' => 'ffffff',
-            'default-image' => '',
-        ) ) );
+        // IMPORTANT: Removed WordPress's native Custom Background feature support
+        // to consolidate all color options under 'Theme Colors'.
+        // The site background color will now be managed by your custom setting.
+        // The commented-out line below is the one that was removed.
+        // add_theme_support( 'custom-background', apply_filters( 'comixcore_custom_background_args', array(
+        //     'default-color' => 'f0f2f5',
+        //     'default-image' => '',
+        // ) ) );
 
         // Add theme support for selective refresh for widgets in Customizer.
         add_theme_support( 'customize-selective-refresh-widgets' );
 
         /**
-         * Add support for core custom logo.
-         *
-         * @link https://codex.wordpress.org/Theme_Logo
+         * Add support for core block visual styles.
+         */
+        add_theme_support( 'wp-block-styles' );
+
+        /**
+         * Add support for responsive embedded content.
+         */
+        add_theme_support( 'responsive-embeds' );
+
+        /**
+         * Register custom logo support.
          */
         add_theme_support( 'custom-logo', array(
-            'height'      => 250,
-            'width'       => 250,
-            'flex-width'  => true,
+            'height'      => 100,
+            'width'       => 400,
             'flex-height' => true,
+            'flex-width'  => true,
+            'header-text' => array( 'site-title', 'site-description' ),
         ) );
     }
 endif;
@@ -116,12 +128,24 @@ add_action( 'widgets_init', 'comixcore_widgets_init' );
 function comixcore_scripts() {
     wp_enqueue_style( 'comixcore-style', get_stylesheet_uri() );
 
+    // Original scripts
     wp_enqueue_script( 'comixcore-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
-
     wp_enqueue_script( 'comixcore-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
 
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
         wp_enqueue_script( 'comment-reply' );
+    }
+
+    // Enqueue customizer-preview.js for live preview.
+    // This script is conditionally loaded only when in the Customizer preview frame.
+    if ( is_customize_preview() ) {
+        wp_enqueue_script(
+            'comixcore-customizer-preview',
+            get_template_directory_uri() . '/js/customizer-preview.js',
+            array( 'jquery', 'customize-preview' ),
+            '20210412', // Version number
+            true // Load in footer
+        );
     }
 }
 add_action( 'wp_enqueue_scripts', 'comixcore_scripts' );
@@ -143,6 +167,7 @@ require get_template_directory() . '/inc/extras.php'; // Ensure extras.php exist
 
 /**
  * Customizer additions.
+ * This line includes the customizer.php file where all color settings are defined.
  */
 require get_template_directory() . '/inc/customizer.php';
 
@@ -150,24 +175,6 @@ require get_template_directory() . '/inc/customizer.php';
  * Load Jetpack compatibility file.
  */
 require get_template_directory() . '/inc/jetpack.php';
-
-// Ensure this code is wrapped in a function and hooked correctly.
-
-/**
- * Sets up custom logo support for the theme.
- * This needs to run early in the theme setup process.
- */
-function comixcore_custom_logo_setup() {
-    add_theme_support( 'custom-logo', array(
-        'height'      => 256, // Adjust to your logo's height
-        'width'       => 256, // Adjust to your logo's width
-        'flex-height' => true,
-        'flex-width'  => true,
-        'header-text' => array( 'site-title', 'site-description' ),
-    ) );
-}
-add_action( 'after_setup_theme', 'comixcore_custom_logo_setup' );
-
 
 /**
  * Sets the default custom logo upon theme activation.
